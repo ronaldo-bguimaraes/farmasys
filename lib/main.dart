@@ -9,16 +9,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseFirestore.instance.collection('teste').add({
-    'name': 'ronaldo',
-    'children': [
-      {'o': 8},
-      {'o': 9},
-    ],
-    'child': {
-      'id': '92127168',
-    }
-  });
   runApp(const Home());
 }
 
