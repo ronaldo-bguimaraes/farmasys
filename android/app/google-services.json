@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1061467651482",
+    "project_id": "farmasys-fac9a",
+    "storage_bucket": "farmasys-fac9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061467651482:android:5c12337adbc9e157478e23",
+        "android_client_info": {
+          "package_name": "com.example.farmasys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061467651482-0t83tjk72i5lfr98ntipmdfcncai95ki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrvuP_lu1sQ238Cgl-ia9JRCwHCdGOEeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061467651482-0t83tjk72i5lfr98ntipmdfcncai95ki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
