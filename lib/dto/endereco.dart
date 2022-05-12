@@ -1,6 +1,6 @@
-import 'package:farmasys/dto/inteface/dto.dart';
+import 'package:farmasys/dto/inteface/entity_base.dart';
 
-class Endereco extends Dto {
+class Endereco extends EntityBase {
   String cep;
   String uf;
   String cidade;

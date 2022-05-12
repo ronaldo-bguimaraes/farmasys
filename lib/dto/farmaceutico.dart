@@ -1,20 +1,20 @@
 // import 'package:farmasys/dto/endereco.dart';
-import 'package:farmasys/dto/inteface/user_dto.dart';
+import 'package:farmasys/dto/inteface/user_base.dart';
 
-class Farmaceutico extends UserDto {
-  String cpf;
+class Farmaceutico extends UserBase {
+  String? cpf;
   // Endereco endereco;
 
   Farmaceutico({
-    required this.cpf,
+    this.cpf,
     // required this.endereco,
-    required String nome,
-    required String phone,
+    String? nome,
+    String? telefone,
     required String email,
-    required String senha,
+    required String? senha,
   }) : super(
           nome: nome,
-          telefone: phone,
+          telefone: telefone,
           email: email,
           senha: senha,
         );
@@ -38,6 +38,6 @@ class Farmaceutico extends UserDto {
           nome: map['nome'],
           telefone: map['telefone'],
           email: map['email'],
-          senha: map['senha'],
+          senha: '',
         );
 }

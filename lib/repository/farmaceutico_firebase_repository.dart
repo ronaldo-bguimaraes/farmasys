@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmasys/dto/farmaceutico.dart';
-import 'package:farmasys/repository/interface/repository_firebase.dart';
+import 'package:farmasys/repository/interface/repository.dart';
 
-class FarmaceuticoFirebaseRepository extends IRepositoryFirebase<Farmaceutico> {
+class FarmaceuticoFirebaseRepository extends IRepository<Farmaceutico> {
   late final FirebaseFirestore _firestore;
   late final CollectionReference<Farmaceutico> _collecion;
 
@@ -20,16 +20,16 @@ class FarmaceuticoFirebaseRepository extends IRepositoryFirebase<Farmaceutico> {
   }
   @override
   Future<void> add(Farmaceutico dto) async {
-    _collecion.add(dto);
+    await _collecion.add(dto);
   }
 
   @override
   Future<void> delete(Farmaceutico dto) async {
-    _collecion.doc(dto.id).delete();
+    await _collecion.doc(dto.id).delete();
   }
 
   @override
-  get(String id) async {
+  Future<Farmaceutico?> get(String id) async {
     var docSnapshot = await _collecion.doc(id).get();
     var data = docSnapshot.data();
     data?.id = docSnapshot.id;
@@ -37,28 +37,18 @@ class FarmaceuticoFirebaseRepository extends IRepositoryFirebase<Farmaceutico> {
   }
 
   @override
-  Future<List<Farmaceutico>> list() async {
-    var querySnapshot = await _collecion.get();
-    return querySnapshot.docs.map((snapshot) {
-      var data = snapshot.data();
-      data.id = snapshot.id;
-      return snapshot.data();
-    }).toList();
-  }
-
-  @override
-  Future<void> update(Farmaceutico dto) async {
-    _collecion.doc(dto.id).set(dto);
-  }
-
-  @override
-  listStream() {
+  Stream<List<Farmaceutico>> all() {
     return _collecion.snapshots().map((querySnapshot) {
       return querySnapshot.docs.map((snapshot) {
         var data = snapshot.data();
         data.id = snapshot.id;
-        return snapshot.data();
+        return data;
       }).toList();
     });
+  }
+
+  @override
+  Future<void> update(Farmaceutico dto) async {
+    await _collecion.doc(dto.id).set(dto);
   }
 }
