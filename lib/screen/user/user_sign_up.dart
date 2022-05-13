@@ -1,8 +1,11 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:farmasys/dto/farmaceutico.dart';
 import 'package:farmasys/repository/farmaceutico_firebase_repository.dart';
 import 'package:farmasys/repository/interface/repository.dart';
 import 'package:farmasys/screen/home/home.dart';
+import 'package:farmasys/screen/mask/cpf_mask.dart';
+import 'package:farmasys/screen/mask/phone_mask.dart';
 import 'package:farmasys/service/authenticator_firebase.dart';
 import 'package:farmasys/service/interface/authentication_service.dart';
 import 'package:farmasys/service/user_service.dart';
@@ -31,8 +34,8 @@ class _UserSignUpState extends State<UserSignUp> {
   late final IAuthenticator<Farmaceutico> _auth;
   late final UserServiceFirebase<Farmaceutico> _service;
 
-  late final MaskTextInputFormatter _cpfMask;
-  late final MaskTextInputFormatter _phoneMask;
+  final TextInputMask _cpfMask = getCpfMask();
+  final TextInputMask _phoneMask = getPhoneMask();
 
   @override
   void initState() {
@@ -40,9 +43,6 @@ class _UserSignUpState extends State<UserSignUp> {
     _repository = FarmaceuticoFirebaseRepository();
     _auth = FirebaseAuthenticator(_repository);
     _service = UserServiceFirebase(_auth);
-
-    _cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
-    _phoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
   }
 
   @override
@@ -56,7 +56,7 @@ class _UserSignUpState extends State<UserSignUp> {
           return SingleChildScrollView(
             child: ConstrainedBox(
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -98,7 +98,7 @@ class _UserSignUpState extends State<UserSignUp> {
                           if (value == null || value.isEmpty) {
                             return 'O CPF não pode ser vazio';
                           }
-                          if (_cpfMask.getUnmaskedText().length < 11) {
+                          if (value.length < 14) {
                             return 'CPF inválido';
                           }
                           return null;
@@ -124,7 +124,7 @@ class _UserSignUpState extends State<UserSignUp> {
                           if (value == null || value.isEmpty) {
                             return 'O telefone não pode ser vazio';
                           }
-                          if (_phoneMask.getUnmaskedText().length < 11) {
+                          if (value.length < 14) {
                             return 'Telefone inválido';
                           }
                           return null;
@@ -247,12 +247,12 @@ class _UserSignUpState extends State<UserSignUp> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(45),
+                          padding: const EdgeInsets.all(20),
                         ),
                       ),
                     ],
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                   ),
                 ),
               ),

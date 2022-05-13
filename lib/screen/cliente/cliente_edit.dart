@@ -1,11 +1,13 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:farmasys/dto/cliente.dart';
 import 'package:farmasys/repository/interface/repository.dart';
 import 'package:farmasys/repository/cliente_firebase_repository.dart';
+import 'package:farmasys/screen/mask/cpf_mask.dart';
+import 'package:farmasys/screen/mask/phone_mask.dart';
 import 'package:farmasys/service/cliente_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ClienteEdit extends StatefulWidget {
   static const String routeName = '/cliente-edit';
@@ -24,24 +26,14 @@ class _ClienteEditState extends State<ClienteEdit> {
   late final IRepository<Cliente> _repository;
   late final ClienteService<Cliente> _service;
 
-  late final MaskTextInputFormatter _cpfMask;
-  late final MaskTextInputFormatter _phoneMask;
+  final TextInputMask _cpfMask = getCpfMask();
+  final TextInputMask _phoneMask = getPhoneMask();
 
   @override
   void initState() {
     super.initState();
     _repository = ClienteFirebaseRepository();
     _service = ClienteService(_repository);
-
-    _cpfMask = MaskTextInputFormatter(
-      mask: '###.###.###-##',
-      initialText: widget.cliente.cpf,
-    );
-
-    _phoneMask = MaskTextInputFormatter(
-      mask: '(##) #####-####',
-      initialText: widget.cliente.telefone,
-    );
   }
 
   @override
@@ -55,7 +47,7 @@ class _ClienteEditState extends State<ClienteEdit> {
           return SingleChildScrollView(
             child: ConstrainedBox(
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -101,7 +93,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                           if (value == null || value.isEmpty) {
                             return 'O CPF não pode ser vazio';
                           }
-                          if (_cpfMask.getUnmaskedText().length < 11) {
+                          if (value.length < 14) {
                             return 'CPF inválido';
                           }
                           return null;
@@ -129,7 +121,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                           if (value == null || value.isEmpty) {
                             return 'O telefone não pode ser vazio';
                           }
-                          if (_phoneMask.getUnmaskedText().length < 11) {
+                          if (value.length < 14) {
                             return 'Telefone inválido';
                           }
                           return null;
@@ -167,7 +159,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                         child: const Text('Salvar'),
                         onPressed: () async {
                           var state = _formKey.currentState;
-                          if(state != null) {
+                          if (state != null) {
                             state.save();
                           }
                           if (state != null && state.validate()) {
@@ -205,12 +197,12 @@ class _ClienteEditState extends State<ClienteEdit> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(45),
+                          padding: const EdgeInsets.all(20),
                         ),
                       ),
                     ],
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                   ),
                 ),
               ),

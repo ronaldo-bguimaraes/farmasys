@@ -108,13 +108,8 @@ class _MedicoListState extends State<MedicoList> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(snapshot.connectionState.name)
-                    ],
+                  return const SizedBox(
+                    height: 10,
                   );
                 },
                 itemCount: data.length,

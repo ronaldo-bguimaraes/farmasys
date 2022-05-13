@@ -51,7 +51,7 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
           return SingleChildScrollView(
             child: ConstrainedBox(
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -241,12 +241,12 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(45),
+                          padding: const EdgeInsets.all(20),
                         ),
                       ),
                     ],
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                   ),
                 ),
               ),

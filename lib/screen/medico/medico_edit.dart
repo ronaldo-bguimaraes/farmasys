@@ -1,10 +1,11 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:farmasys/dto/medico.dart';
 import 'package:farmasys/repository/interface/repository.dart';
 import 'package:farmasys/repository/medico_firebase_repository.dart';
+import 'package:farmasys/screen/mask/phone_mask.dart';
 import 'package:farmasys/service/medico_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MedicoEdit extends StatefulWidget {
   static const String routeName = '/medico-edit';
@@ -23,7 +24,7 @@ class _MedicoEditState extends State<MedicoEdit> {
   late final IRepository<Medico> _repository;
   late final MedicoService<Medico> _service;
 
-  late final MaskTextInputFormatter _phoneMask;
+  late final TextInputMask _phoneMask = getPhoneMask();
 
   final _especialidadeController = TextEditingController();
   final _crmUfController = TextEditingController();
@@ -33,11 +34,6 @@ class _MedicoEditState extends State<MedicoEdit> {
     super.initState();
     _repository = MedicoFirebaseRepository();
     _service = MedicoService(_repository);
-
-    _phoneMask = MaskTextInputFormatter(
-      mask: '(##) #####-####',
-      initialText: widget.medico.telefone,
-    );
 
     _especialidadeController.text = widget.medico.especialidade;
     _crmUfController.text = widget.medico.crm.uf;
@@ -54,7 +50,7 @@ class _MedicoEditState extends State<MedicoEdit> {
           return SingleChildScrollView(
             child: ConstrainedBox(
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -128,7 +124,7 @@ class _MedicoEditState extends State<MedicoEdit> {
                           if (value == null || value.isEmpty) {
                             return 'O telefone não pode ser vazio';
                           }
-                          if (_phoneMask.getUnmaskedText().length < 11) {
+                          if (value.length < 14) {
                             return 'Telefone inválido';
                           }
                           return null;
@@ -196,7 +192,7 @@ class _MedicoEditState extends State<MedicoEdit> {
                         height: 15,
                       ),
                       ElevatedButton(
-                        child: const Text('Atualizar'),
+                        child: const Text('Salvar'),
                         onPressed: () async {
                           var state = _formKey.currentState;
                           if (state != null) {
@@ -237,12 +233,12 @@ class _MedicoEditState extends State<MedicoEdit> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(45),
+                          padding: const EdgeInsets.all(20),
                         ),
                       ),
                     ],
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                   ),
                 ),
               ),

@@ -58,10 +58,14 @@ class _DashboardState extends State<Dashboard> {
               child: Card(
                 color: Colors.blue,
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Image.asset(item.image),
+                      Image(
+                        image: AssetImage(item.image),
+                        width: 80,
+                        height: 80,
+                      ),
                       const SizedBox(
                         height: 5,
                       ),

@@ -43,7 +43,7 @@ class _UserSignInState extends State<UserSignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -114,53 +114,52 @@ class _UserSignInState extends State<UserSignIn> {
               const SizedBox(
                 height: 15,
               ),
-              SizedBox(
-                child: ElevatedButton(
-                  child: const Text('Entrar como Farmacêutico'),
-                  onPressed: () async {
-                    var state = _formKey.currentState;
-                    if (state != null) {
-                      state.save();
+              ElevatedButton(
+                child: const Text('Entrar como Farmacêutico'),
+                onPressed: () async {
+                  var state = _formKey.currentState;
+                  if (state != null) {
+                    state.save();
+                  }
+                  if (state != null && state.validate()) {
+                    try {
+                      await _service.signIn(_farmaceutico);
+                      Navigator.of(context).pushReplacementNamed(
+                        Home.routeName,
+                      );
                     }
-                    if (state != null && state.validate()) {
-                      try {
-                        await _service.signIn(_farmaceutico);
-                        Navigator.of(context).pushReplacementNamed(
-                          Home.routeName,
-                        );
-                      }
-                      //
-                      on FirebaseAuthException catch (error) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Erro'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: [
-                                    Text('${error.message}'),
-                                  ],
-                                ),
+                    //
+                    on FirebaseAuthException catch (error) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Erro'),
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: [
+                                  Text('${error.message}'),
+                                ],
                               ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('Ok'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                      // catch end
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('Ok'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
-                  },
+                    // catch end
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(20),
                 ),
-                width: 300,
-                height: 45,
               ),
               const SizedBox(
                 height: 15,
@@ -172,11 +171,13 @@ class _UserSignInState extends State<UserSignIn> {
                     UserSignUp.routeName,
                   );
                 },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(20),
+                ),
               ),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.min,
           ),
         ),
       ),
