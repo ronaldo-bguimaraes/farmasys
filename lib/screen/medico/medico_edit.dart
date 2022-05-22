@@ -24,7 +24,7 @@ class _MedicoEditState extends State<MedicoEdit> {
   late final IRepository<Medico> _repository;
   late final MedicoService<Medico> _service;
 
-  late final TextInputMask _phoneMask = getPhoneMask();
+  late final TextInputMask _phoneMask;
 
   final _especialidadeController = TextEditingController();
   final _crmUfController = TextEditingController();
@@ -34,6 +34,8 @@ class _MedicoEditState extends State<MedicoEdit> {
     super.initState();
     _repository = MedicoFirebaseRepository();
     _service = MedicoService(_repository);
+
+    _phoneMask = getPhoneMask();
 
     _especialidadeController.text = widget.medico.especialidade;
     _crmUfController.text = widget.medico.crm.uf;

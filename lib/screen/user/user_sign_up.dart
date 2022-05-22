@@ -11,7 +11,6 @@ import 'package:farmasys/service/interface/authentication_service.dart';
 import 'package:farmasys/service/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class UserSignUp extends StatefulWidget {
   static const String routeName = '/user-sign-up';
@@ -34,8 +33,8 @@ class _UserSignUpState extends State<UserSignUp> {
   late final IAuthenticator<Farmaceutico> _auth;
   late final UserServiceFirebase<Farmaceutico> _service;
 
-  final TextInputMask _cpfMask = getCpfMask();
-  final TextInputMask _phoneMask = getPhoneMask();
+  late final TextInputMask _cpfMask;
+  late final TextInputMask _phoneMask;
 
   @override
   void initState() {
@@ -43,6 +42,9 @@ class _UserSignUpState extends State<UserSignUp> {
     _repository = FarmaceuticoFirebaseRepository();
     _auth = FirebaseAuthenticator(_repository);
     _service = UserServiceFirebase(_auth);
+
+    _cpfMask = getCpfMask();
+    _phoneMask = getPhoneMask();
   }
 
   @override
@@ -213,8 +215,9 @@ class _UserSignUpState extends State<UserSignUp> {
                           if (state != null && state.validate()) {
                             try {
                               await _service.signUp(_farmaceutico);
-                              Navigator.of(context).pushReplacementNamed(
+                              Navigator.of(context).pushNamedAndRemoveUntil(
                                 Home.routeName,
+                                (route) => false,
                               );
                             }
                             //

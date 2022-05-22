@@ -8,7 +8,11 @@ class UserServiceFirebase<T extends UserBase> {
 
   UserServiceFirebase(this._auth);
 
-  Future<T?> getUser() async {
+  Stream<Future<T?>> getUserChanges() {
+    return _auth.getUserChanges();
+  }
+
+  Future<T?> getCurrentUser() async {
     return await _auth.getCurrentUser();
   }
 
@@ -20,7 +24,7 @@ class UserServiceFirebase<T extends UserBase> {
     return await _auth.signInWithEmailAndPassword(user);
   }
 
-  Future<void> signOut(T usuario) async {
+  Future<void> signOut() async {
     await _auth.signOut();
   }
 }

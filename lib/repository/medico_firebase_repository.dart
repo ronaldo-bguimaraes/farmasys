@@ -19,6 +19,7 @@ class MedicoFirebaseRepository extends IRepository<Medico> {
       },
     );
   }
+
   @override
   Future<void> add(Medico dto) async {
     await _collecion.add(dto);

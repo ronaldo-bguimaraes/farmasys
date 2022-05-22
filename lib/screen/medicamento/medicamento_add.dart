@@ -110,7 +110,8 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                         initialValue: _medicamento.miligramas.toString(),
                         onSaved: (value) {
                           if (value != null) {
-                            _medicamento.miligramas = double.parse(value);
+                            _medicamento.miligramas =
+                                double.tryParse(value) ?? 0;
                           }
                         },
                         decoration: const InputDecoration(
@@ -122,7 +123,9 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                           if (value == null || value.isEmpty) {
                             return 'Os miligramas não pode ser vazio';
                           }
-                          if (int.parse(value) < 0) {
+                          double? miligramas = double.tryParse(value);
+                          //
+                          if (miligramas == null || miligramas < 0) {
                             return 'Miligramas inválidos';
                           }
                           return null;
@@ -135,7 +138,7 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                         initialValue: _medicamento.preco.toString(),
                         onSaved: (value) {
                           if (value != null) {
-                            _medicamento.preco = double.parse(value);
+                            _medicamento.preco = double.tryParse(value) ?? 0;
                           }
                         },
                         decoration: const InputDecoration(
@@ -147,7 +150,9 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                           if (value == null || value.isEmpty) {
                             return 'O preço não pode ser vazio';
                           }
-                          if (int.parse(value) < 0) {
+                          double? preco = double.tryParse(value);
+                          //
+                          if (preco == null || preco < 0) {
                             return 'Preço inválido';
                           }
                           return null;
@@ -160,7 +165,7 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                         initialValue: _medicamento.quantidade.toString(),
                         onSaved: (value) {
                           if (value != null) {
-                            _medicamento.quantidade = int.parse(value);
+                            _medicamento.quantidade = int.tryParse(value) ?? 0;
                           }
                         },
                         decoration: const InputDecoration(
@@ -172,7 +177,9 @@ class _MedicamentoAddState extends State<MedicamentoAdd> {
                           if (value == null || value.isEmpty) {
                             return 'A quantidade não pode ser vazia';
                           }
-                          if (int.parse(value) < 0) {
+                          int? quantidade = int.tryParse(value);
+                          //
+                          if (quantidade == null || quantidade < 0) {
                             return 'Quantidade inválida';
                           }
                           return null;

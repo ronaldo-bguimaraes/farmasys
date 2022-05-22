@@ -101,8 +101,9 @@ class _MedicamentoListState extends State<MedicamentoList> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>
-                              MedicamentoEdit(medicamento: medicamento),
+                          builder: (context) => MedicamentoEdit(
+                            medicamento: medicamento,
+                          ),
                         ),
                       );
                     },

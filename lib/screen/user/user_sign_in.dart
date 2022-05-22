@@ -124,8 +124,9 @@ class _UserSignInState extends State<UserSignIn> {
                   if (state != null && state.validate()) {
                     try {
                       await _service.signIn(_farmaceutico);
-                      Navigator.of(context).pushReplacementNamed(
+                      Navigator.of(context).pushNamedAndRemoveUntil(
                         Home.routeName,
+                        (route) => false,
                       );
                     }
                     //

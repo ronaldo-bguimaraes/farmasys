@@ -7,7 +7,6 @@ import 'package:farmasys/screen/mask/phone_mask.dart';
 import 'package:farmasys/service/medico_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MedicoAdd extends StatefulWidget {
   static const String routeName = '/medico-add';
@@ -34,7 +33,7 @@ class _MedicoAddState extends State<MedicoAdd> {
   late final IRepository<Medico> _repository;
   late final MedicoService<Medico> _service;
 
-  final TextInputMask _phoneMask = getPhoneMask();
+  late final TextInputMask _phoneMask;
 
   final _especialidadeController = TextEditingController();
   final _crmUfController = TextEditingController();
@@ -44,6 +43,8 @@ class _MedicoAddState extends State<MedicoAdd> {
     super.initState();
     _repository = MedicoFirebaseRepository();
     _service = MedicoService(_repository);
+
+    _phoneMask = getPhoneMask();
 
     _especialidadeController.text = _medico.especialidade;
     _crmUfController.text = _medico.crm.uf;

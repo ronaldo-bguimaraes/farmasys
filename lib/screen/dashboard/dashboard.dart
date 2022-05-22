@@ -1,7 +1,10 @@
+import 'package:farmasys/repository/farmaceutico_firebase_repository.dart';
 import 'package:farmasys/screen/cliente/cliente_list.dart';
 import 'package:farmasys/screen/dashboard/dashboard_item.dart';
 import 'package:farmasys/screen/medicamento/medicamento_list.dart';
 import 'package:farmasys/screen/medico/medico_list.dart';
+import 'package:farmasys/service/authenticator_firebase.dart';
+import 'package:farmasys/service/user_service.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -35,6 +38,25 @@ class _DashboardState extends State<Dashboard> {
       image: './assets/images/medicamento.png',
       event: (context) {
         Navigator.of(context).pushNamed(MedicamentoList.routeName);
+      },
+    ),
+    DashboardItem(
+      title: 'Sair',
+      subTitle: 'Fazer logout',
+      image: './assets/images/sair.png',
+      event: (context) async {
+        try {
+          await UserServiceFirebase(
+            FirebaseAuthenticator(
+              FarmaceuticoFirebaseRepository(),
+            ),
+          ).signOut();
+        }
+        //
+        catch (error) {
+          //
+          debugPrint('Error ao fazer logout!');
+        }
       },
     ),
   ];

@@ -1,4 +1,5 @@
 import 'package:farmasys/screen/dashboard/dashboard.dart';
+import 'package:farmasys/screen/inicio/inicio.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -11,11 +12,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedPage = 1;
+  int _selectedPage = 0;
 
-  final List<Widget> _pages = [
-    Container(),
-    const Dashboard(),
+  final List<Widget> _pages = const [
+    Inicio(),
+    Dashboard(),
   ];
 
   @override

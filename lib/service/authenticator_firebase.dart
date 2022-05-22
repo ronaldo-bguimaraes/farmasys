@@ -27,6 +27,16 @@ class FirebaseAuthenticator<T extends UserBase> extends IAuthenticator<T> {
   }
 
   @override
+  Stream<Future<T?>> getUserChanges() {
+    return _auth.userChanges().map((userCredential) async {
+      if (userCredential != null) {
+        return _repository.get(userCredential.uid);
+      }
+      return Future.value(null);
+    });
+  }
+
+  @override
   Future<T?> getCurrentUser() async {
     return await _repository.get(_auth.currentUser!.uid);
   }

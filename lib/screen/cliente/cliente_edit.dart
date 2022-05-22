@@ -26,14 +26,17 @@ class _ClienteEditState extends State<ClienteEdit> {
   late final IRepository<Cliente> _repository;
   late final ClienteService<Cliente> _service;
 
-  final TextInputMask _cpfMask = getCpfMask();
-  final TextInputMask _phoneMask = getPhoneMask();
+  late final TextInputMask _cpfMask;
+  late final TextInputMask _phoneMask;
 
   @override
   void initState() {
     super.initState();
     _repository = ClienteFirebaseRepository();
     _service = ClienteService(_repository);
+
+    _cpfMask = getCpfMask();
+    _phoneMask = getPhoneMask();
   }
 
   @override
