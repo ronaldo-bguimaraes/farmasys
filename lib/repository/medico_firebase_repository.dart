@@ -12,7 +12,9 @@ class MedicoFirebaseRepository extends IRepository<Medico> {
     _firestore = FirebaseFirestore.instance;
     _collecion = _firestore.collection('medicos').withConverter<Medico>(
       fromFirestore: (snapshot, options) {
-        return Medico.fromMap(snapshot.data()!);
+        var dto = Medico.fromMap(snapshot.data()!);
+        dto.id = snapshot.id;
+        return dto;
       },
       toFirestore: (medico, options) {
         return medico.toMap();
@@ -22,7 +24,14 @@ class MedicoFirebaseRepository extends IRepository<Medico> {
 
   @override
   Future<void> add(Medico dto) async {
-    await _collecion.add(dto);
+    var ref = await _collecion.add(dto);
+    dto.id = ref.id;
+  }
+
+  @override
+  Future<List<Medico>> all() async {
+    var querySnapshot = await _collecion.get();
+    return querySnapshot.docs.map((snapshot) => snapshot.data()).toList();
   }
 
   @override
@@ -33,22 +42,16 @@ class MedicoFirebaseRepository extends IRepository<Medico> {
   @override
   Future<Medico?> get(String id) async {
     var docSnapshot = await _collecion.doc(id).get();
-    var data = docSnapshot.data();
-    data?.id = docSnapshot.id;
-    return data;
+    return docSnapshot.data();
   }
 
   @override
-  Stream<List<Medico>> all() {
-    var controller = StreamController<List<Medico>>();
-    _collecion.snapshots().listen((event) {
-      controller.add(event.docs.map((snapshot) {
-        var data = snapshot.data();
-        data.id = snapshot.id;
-        return data;
-      }).toList());
+  Stream<List<Medico>> streamAll() {
+    return _collecion.snapshots().map((querySnapshot) {
+      return querySnapshot.docs.map((snapshot) {
+        return snapshot.data();
+      }).toList();
     });
-    return controller.stream;
   }
 
   @override

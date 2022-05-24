@@ -11,7 +11,9 @@ class MedicamentoFirebaseRepository extends IRepository<Medicamento> {
     _collecion =
         _firestore.collection('medicamentos').withConverter<Medicamento>(
       fromFirestore: (snapshot, options) {
-        return Medicamento.fromMap(snapshot.data()!);
+        var dto = Medicamento.fromMap(snapshot.data()!);
+        dto.id = snapshot.id;
+        return dto;
       },
       toFirestore: (medicamento, options) {
         return medicamento.toMap();
@@ -20,7 +22,14 @@ class MedicamentoFirebaseRepository extends IRepository<Medicamento> {
   }
   @override
   Future<void> add(Medicamento dto) async {
-    await _collecion.add(dto);
+    var ref = await _collecion.add(dto);
+    dto.id = ref.id;
+  }
+
+  @override
+  Future<List<Medicamento>> all() async {
+    var querySnapshot = await _collecion.get();
+    return querySnapshot.docs.map((snapshot) => snapshot.data()).toList();
   }
 
   @override
@@ -31,18 +40,14 @@ class MedicamentoFirebaseRepository extends IRepository<Medicamento> {
   @override
   Future<Medicamento?> get(String id) async {
     var docSnapshot = await _collecion.doc(id).get();
-    var data = docSnapshot.data();
-    data?.id = docSnapshot.id;
-    return data;
+    return docSnapshot.data();
   }
 
   @override
-  Stream<List<Medicamento>> all() {
+  Stream<List<Medicamento>> streamAll() {
     return _collecion.snapshots().map((querySnapshot) {
       return querySnapshot.docs.map((snapshot) {
-        var data = snapshot.data();
-        data.id = snapshot.id;
-        return data;
+        return snapshot.data();
       }).toList();
     });
   }

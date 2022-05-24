@@ -11,7 +11,7 @@ class ClienteService<T extends Cliente> {
   }
 
   Stream<List<T>> all() {
-    return _clienteRepository.all();
+    return _clienteRepository.streamAll();
   }
 
   Future<void> update(T cliente) async {

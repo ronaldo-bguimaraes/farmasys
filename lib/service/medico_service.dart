@@ -11,7 +11,7 @@ class MedicoService<T extends Medico> {
   }
 
   Stream<List<T>> all() {
-    return _medicoRepository.all();
+    return _medicoRepository.streamAll();
   }
 
   Future<void> update(T medico) async {

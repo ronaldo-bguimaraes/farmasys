@@ -10,7 +10,9 @@ class ClienteFirebaseRepository extends IRepository<Cliente> {
     _firestore = FirebaseFirestore.instance;
     _collecion = _firestore.collection('clientes').withConverter<Cliente>(
       fromFirestore: (snapshot, options) {
-        return Cliente.fromMap(snapshot.data()!);
+        var dto = Cliente.fromMap(snapshot.data()!);
+        dto.id = snapshot.id;
+        return dto;
       },
       toFirestore: (cliente, options) {
         return cliente.toMap();
@@ -20,7 +22,14 @@ class ClienteFirebaseRepository extends IRepository<Cliente> {
 
   @override
   Future<void> add(Cliente dto) async {
-    await _collecion.add(dto);
+    var ref = await _collecion.add(dto);
+    dto.id = ref.id;
+  }
+
+  @override
+  Future<List<Cliente>> all() async {
+    var querySnapshot = await _collecion.get();
+    return querySnapshot.docs.map((snapshot) => snapshot.data()).toList();
   }
 
   @override
@@ -31,18 +40,14 @@ class ClienteFirebaseRepository extends IRepository<Cliente> {
   @override
   Future<Cliente?> get(String id) async {
     var docSnapshot = await _collecion.doc(id).get();
-    var data = docSnapshot.data();
-    data?.id = docSnapshot.id;
-    return data;
+    return docSnapshot.data();
   }
 
   @override
-  Stream<List<Cliente>> all() {
+  Stream<List<Cliente>> streamAll() {
     return _collecion.snapshots().map((querySnapshot) {
       return querySnapshot.docs.map((snapshot) {
-        var data = snapshot.data();
-        data.id = snapshot.id;
-        return data;
+        return snapshot.data();
       }).toList();
     });
   }
