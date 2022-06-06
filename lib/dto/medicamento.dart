@@ -1,39 +1,23 @@
-import 'package:farmasys/dto/inteface/entity_base.dart';
+import 'package:farmasys/dto/inteface/i_entity.dart';
+import 'package:farmasys/dto/substancia.dart';
 
-class Medicamento extends EntityBase {
+class Medicamento implements IEntity {
+  @override
+  String? id;
   String nome;
-  String principioAtivo;
   double miligramas;
   double preco;
   int quantidade;
-  bool controlado;
+  String? principioAtivoId;
+  Substancia? principioAtivo;
 
   Medicamento({
+    String? id,
     required this.nome,
-    required this.principioAtivo,
     required this.miligramas,
     required this.preco,
     required this.quantidade,
-    required this.controlado,
+    this.principioAtivoId,
+    this.principioAtivo,
   });
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      'nome': nome,
-      'principioAtivo': principioAtivo,
-      'miligramas': miligramas.toDouble(),
-      'preco': preco.toDouble(),
-      'quantidade': quantidade.toInt(),
-      'controlado': controlado,
-    };
-  }
-
-  Medicamento.fromMap(Map<String, dynamic> map)
-      : nome = map['nome'],
-        principioAtivo = map['principioAtivo'],
-        miligramas = map['miligramas'].toDouble(),
-        preco = map['preco'].toDouble(),
-        quantidade = map['quantidade'].toInt(),
-        controlado = map['controlado'];
 }

@@ -1,6 +1,6 @@
 name: farmasys
 description: A new Flutter project.
-publish_to: none # Remove this line if you wish to publish to pub.dev
+publish_to: none
 version: 1.0.0+1
 environment:
   sdk: '>=2.16.2 <3.0.0'
@@ -16,6 +16,7 @@ dependencies:
   email_validator: ^2.0.1
   easy_mask: ^2.0.1
   provider: ^6.0.2
+  cpf_cnpj_validator: ^2.0.0
 
 dev_dependencies:
   flutter_test:

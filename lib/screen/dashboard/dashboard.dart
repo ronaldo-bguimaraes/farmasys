@@ -1,11 +1,13 @@
-import 'package:farmasys/repository/farmaceutico_firebase_repository.dart';
+import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/screen/cliente/cliente_list.dart';
 import 'package:farmasys/screen/dashboard/dashboard_item.dart';
-import 'package:farmasys/screen/medicamento/medicamento_list.dart';
-import 'package:farmasys/screen/medico/medico_list.dart';
-import 'package:farmasys/service/authenticator_firebase.dart';
-import 'package:farmasys/service/user_service.dart';
+import 'package:farmasys/screen/farmaceutico/farmaceutico_sign_in.dart';
+import 'package:farmasys/screen/medicamento/medicamento_inicio.dart';
+import 'package:farmasys/screen/medico/medico_inicio.dart';
+import 'package:farmasys/screen/tipo_receita/tipo_receita_inicio.dart';
+import 'package:farmasys/service/interface/i_service_farmaceutico.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -19,43 +21,62 @@ class _DashboardState extends State<Dashboard> {
     DashboardItem(
       title: 'Medicos',
       subTitle: 'Lista de Médicos',
-      image: './assets/images/medico.png',
+      assetName: './assets/images/medico.png',
       event: (context) {
-        Navigator.of(context).pushNamed(MedicoList.routeName);
+        Navigator.of(context).pushNamed(MedicoInicio.routeName);
       },
     ),
     DashboardItem(
       title: 'Clientes',
-      subTitle: 'Lista de Clientes',
-      image: './assets/images/cliente.png',
+      subTitle: 'Lista de clientes',
+      assetName: './assets/images/cliente.png',
       event: (context) {
         Navigator.of(context).pushNamed(ClienteList.routeName);
       },
     ),
     DashboardItem(
-      title: 'Medicamentos',
-      subTitle: 'Lista de Medicamentos',
-      image: './assets/images/medicamento.png',
+      title: 'Tipos',
+      subTitle: 'Tipos de receita, notificação',
+      assetName: './assets/images/receita.png',
       event: (context) {
-        Navigator.of(context).pushNamed(MedicamentoList.routeName);
+        Navigator.of(context).pushNamed(TiposInicio.routeName);
+      },
+    ),
+    DashboardItem(
+      title: 'Medicamentos',
+      subTitle: 'Listas de medicamentos, substâncias e controle',
+      assetName: './assets/images/medicamento.png',
+      event: (context) {
+        Navigator.of(context).pushNamed(MedicamentoInicio.routeName);
       },
     ),
     DashboardItem(
       title: 'Sair',
       subTitle: 'Fazer logout',
-      image: './assets/images/sair.png',
+      assetName: './assets/images/sair.png',
       event: (context) async {
         try {
-          await UserServiceFirebase(
-            FirebaseAuthenticator(
-              FarmaceuticoFirebaseRepository(),
+          await context.read<IServiceFarmaceutico>().signOut();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            FarmaceuticoSignIn.routeName,
+            (_) => false,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Logout realizado com sucesso!'),
+              duration: Duration(seconds: 1),
             ),
-          ).signOut();
+          );
         }
         //
-        catch (error) {
-          //
-          debugPrint('Error ao fazer logout!');
+        on ExceptionMessage catch (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.message),
+              duration: const Duration(seconds: 1),
+            ),
+          );
+          Navigator.of(context).pop();
         }
       },
     ),
@@ -64,37 +85,38 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Menu de Opções'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
           itemCount: _list.length,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 250,
+            maxCrossAxisExtent: 225,
             childAspectRatio: 1,
             mainAxisSpacing: 5,
             crossAxisSpacing: 5,
           ),
           itemBuilder: (BuildContext context, int index) {
-            var item = _list[index];
             return GestureDetector(
               child: Card(
-                color: Colors.blue,
+                margin: EdgeInsets.zero,
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Image(
-                        image: AssetImage(item.image),
-                        width: 80,
-                        height: 80,
+                        image: AssetImage(_list[index].assetName),
+                        width: 50,
+                        height: 50,
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        item.title,
+                        _list[index].title,
                         style: const TextStyle(
-                          color: Colors.white,
                           fontSize: 20,
                         ),
                       ),
@@ -102,11 +124,8 @@ class _DashboardState extends State<Dashboard> {
                         height: 5,
                       ),
                       Text(
-                        item.subTitle,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
+                        _list[index].subTitle,
+                        textAlign: TextAlign.center,
                       ),
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +133,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               onTap: () {
-                item.event(context);
+                _list[index].event(context);
               },
             );
           },

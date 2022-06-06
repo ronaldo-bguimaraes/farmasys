@@ -1,23 +1,11 @@
-import 'package:farmasys/dto/inteface/dto_base.dart';
+import 'package:farmasys/dto/inteface/i_dto.dart';
 
-class CRM extends DtoBase {
-  String codigo;
+class CRM extends IDto {
   String uf;
+  String codigo;
 
   CRM({
     required this.codigo,
     required this.uf,
   });
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      'codigo': codigo,
-      'uf': uf,
-    };
-  }
-
-  CRM.fromMap(Map<String, dynamic> map)
-      : codigo = map['codigo'],
-        uf = map['uf'];
 }

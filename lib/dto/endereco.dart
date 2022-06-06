@@ -1,6 +1,8 @@
-import 'package:farmasys/dto/inteface/entity_base.dart';
+import 'package:farmasys/dto/inteface/i_entity.dart';
 
-class Endereco extends EntityBase {
+class Endereco implements IEntity {
+  @override
+  String? id;
   String cep;
   String uf;
   String cidade;
@@ -10,6 +12,7 @@ class Endereco extends EntityBase {
   String complemento;
 
   Endereco({
+    this.id,
     required this.cep,
     required this.uf,
     required this.cidade,
@@ -18,26 +21,4 @@ class Endereco extends EntityBase {
     required this.numero,
     required this.complemento,
   });
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      'cep': cep,
-      'uf': uf,
-      'cidade': cidade,
-      'bairro': bairro,
-      'rua': rua,
-      'numero': numero,
-      'complemento': complemento,
-    };
-  }
-
-  Endereco.fromMap(Map<String, dynamic> map)
-      : cep = map['cep'],
-        uf = map['uf'],
-        cidade = map['cidade'],
-        bairro = map['bairro'],
-        rua = map['rua'],
-        numero = map['numero'],
-        complemento = map['complemento'];
 }
