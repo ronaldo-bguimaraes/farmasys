@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 
 class StreamFutureSnapshotBuilder<T> extends StatelessWidget {
   final Stream<Future<T>> stream;
-  final bool Function(T? data) isEmpty;
-  final Widget Function(BuildContext context, T data) builder;
+  final bool Function(T? data) showChild;
+  final Widget Function(BuildContext ctx, T data) builder;
 
-  const StreamFutureSnapshotBuilder({Key? key, required this.stream, required this.isEmpty, required this.builder}) : super(key: key);
+  const StreamFutureSnapshotBuilder({Key? key, required this.stream, required this.showChild, required this.builder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamFutureBuilder<T>(
       stream: stream,
-      builder: (context, snapshot) {
+      builder: (ctx, snapshot) {
         return SnapshotBuilder<T>(
           snapshot: snapshot,
-          showChild: isEmpty,
+          showChild: showChild,
           builder: builder,
         );
       },

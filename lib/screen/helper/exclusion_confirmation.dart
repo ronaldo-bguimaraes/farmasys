@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ExclusionConfirmation extends StatelessWidget {
-  final void Function(BuildContext context) onAccept;
+  final void Function(BuildContext ctx) onAccept;
 
   const ExclusionConfirmation({Key? key, required this.onAccept}) : super(key: key);
 
@@ -52,10 +52,10 @@ class ExclusionConfirmation extends StatelessWidget {
     );
   }
 
-  static void show({required BuildContext context, required void Function(BuildContext context) onAccept}) {
+  static void show({required BuildContext ctx, required void Function(BuildContext ctx) onAccept}) {
     showDialog(
-      context: context,
-      builder: (context) {
+      context: ctx,
+      builder: (ctx) {
         return ExclusionConfirmation(
           onAccept: onAccept,
         );

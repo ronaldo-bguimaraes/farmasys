@@ -1,4 +1,5 @@
 import 'package:farmasys/dto/tipo_notificacao.dart';
+import 'package:farmasys/enum/cor.dart';
 import 'package:farmasys/mapper/interface/i_mapper_tipo_notificacao.dart';
 
 class MapperTipoNotificacao implements IMapperTipoNotificacao {
@@ -6,8 +7,8 @@ class MapperTipoNotificacao implements IMapperTipoNotificacao {
   Map<String, dynamic> toMap(TipoNotificacao tipoNotificacao) {
     return {
       'id': tipoNotificacao.id,
-      'descricao': tipoNotificacao.descricao,
-      'validade': tipoNotificacao.validade.toInt(),
+      'nome': tipoNotificacao.nome,
+      'cor': tipoNotificacao.cor.name,
     };
   }
 
@@ -15,8 +16,8 @@ class MapperTipoNotificacao implements IMapperTipoNotificacao {
   TipoNotificacao fromMap(Map<String, dynamic> map) {
     return TipoNotificacao(
       id: map['id'],
-      descricao: map['descricao'],
-      validade: map['validade'].toInt(),
+      nome: map['nome'],
+      cor: Cor.getByName(map['cor']),
     );
   }
 }

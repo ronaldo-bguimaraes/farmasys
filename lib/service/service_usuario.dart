@@ -1,3 +1,4 @@
+import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/repository/interface/i_repository_usuario.dart';
 import 'package:farmasys/service/interface/i_service_authentication.dart';
 import 'package:farmasys/dto/inteface/i_usuario.dart';
@@ -18,17 +19,32 @@ abstract class ServiceUsuario<T extends IUsuario> extends ServiceEntityBase<T> i
   }
 
   @override
-  Future<void> signUp(T usuario) async {
+  Future<T> signUp(T usuario) async {
     return await _authUsuario.createUserWithEmailAndPassword(usuario);
   }
 
   @override
-  Future<void> signIn(T usuario) async {
+  Future<T> signIn(T usuario) async {
     return await _authUsuario.signInWithEmailAndPassword(usuario);
   }
 
   @override
   Future<void> signOut() async {
-    await _authUsuario.signOut();
+    return await _authUsuario.signOut();
+  }
+
+  @override
+  Future<List<T>> getAll([IEntity? relatedEntity]) async {
+    final usuarios = await super.getAll();
+    usuarios.sort((a, b) => a.nome.compareTo(b.nome));
+    return usuarios;
+  }
+
+  @override
+  Stream<List<T>> streamAll([IEntity? relatedEntity]) {
+    return super.streamAll().map((usuarios) {
+      usuarios.sort((a, b) => a.nome.compareTo(b.nome));
+      return usuarios;
+    });
   }
 }

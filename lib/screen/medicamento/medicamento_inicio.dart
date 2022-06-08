@@ -1,6 +1,6 @@
 import 'package:farmasys/screen/lista_controle/lista_controle_list.dart';
 import 'package:farmasys/screen/medicamento/medicamento_list.dart';
-import 'package:farmasys/screen/substancia/substancia_list.dart';
+import 'package:farmasys/screen/principio_ativo/principio_ativo_list.dart';
 import 'package:flutter/material.dart';
 
 class MedicamentoInicio extends StatefulWidget {
@@ -15,12 +15,12 @@ class MedicamentoInicio extends StatefulWidget {
 class _MedicamentoInicioState extends State<MedicamentoInicio> {
   final List<String> _categorias = [
     'Medicamentos',
-    'Substâncias',
+    'Princípios ativos',
     'Listas de Controle',
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return DefaultTabController(
       child: Scaffold(
         appBar: AppBar(
@@ -33,7 +33,7 @@ class _MedicamentoInicioState extends State<MedicamentoInicio> {
         body: const TabBarView(
           children: [
             MedicamentoList(),
-            SubstanciaList(),
+            PrincipioAtivoList(),
             ListaControleList(),
           ],
         ),

@@ -13,12 +13,12 @@ class Endereco implements IEntity {
 
   Endereco({
     this.id,
-    required this.cep,
-    required this.uf,
-    required this.cidade,
-    required this.bairro,
-    required this.rua,
-    required this.numero,
-    required this.complemento,
+    this.cep = '',
+    this.uf = '',
+    this.cidade = '',
+    this.bairro = '',
+    this.rua = '',
+    this.numero = '',
+    this.complemento = '',
   });
 }

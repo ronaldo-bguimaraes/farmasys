@@ -13,10 +13,10 @@ class Medico implements IEntity {
 
   Medico({
     this.id,
-    required this.nome,
-    required this.telefone,
-    required this.crm,
+    this.nome = '',
+    this.telefone = '',
+    CRM? crm,
     this.especialidadeId,
     this.especialidade,
-  });
+  }) : crm = crm ?? CRM();
 }

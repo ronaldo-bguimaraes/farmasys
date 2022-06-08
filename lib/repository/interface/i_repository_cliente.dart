@@ -1,4 +1,4 @@
 import 'package:farmasys/dto/cliente.dart';
-import 'package:farmasys/repository/interface/i_repository_base.dart';
+import 'package:farmasys/repository/interface/i_repository.dart';
 
-abstract class IRepositoryCliente<T extends Cliente> extends IRepositoryBase<T> {}
+abstract class IRepositoryCliente extends IRepository<Cliente> {}

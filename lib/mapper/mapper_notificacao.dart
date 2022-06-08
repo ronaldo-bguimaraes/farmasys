@@ -6,9 +6,7 @@ class MapperNotificacao implements IMapperNotificacao {
   Map<String, dynamic> toMap(Notificacao notificacao) {
     return {
       'id': notificacao.id,
-      'subtotal': notificacao.subtotal.toDouble(),
       'tipoNotificacaoId': notificacao.tipoNotificacaoId,
-      'medicamentoId': notificacao.medicamentoId,
     };
   }
 
@@ -16,9 +14,7 @@ class MapperNotificacao implements IMapperNotificacao {
   Notificacao fromMap(Map<String, dynamic> map) {
     return Notificacao(
       id: map['id'],
-      subtotal: map['subtotal'].toDouble(),
       tipoNotificacaoId: map['tipoNotificacaoId'],
-      medicamentoId: map['medicamentoId'],
     );
   }
 }

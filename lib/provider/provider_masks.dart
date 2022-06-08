@@ -1,6 +1,8 @@
 import 'package:farmasys/screen/mask/interface/i_mask_cpf.dart';
+import 'package:farmasys/screen/mask/interface/i_mask_date.dart';
 import 'package:farmasys/screen/mask/interface/i_mask_telefone.dart';
 import 'package:farmasys/screen/mask/mask_cpf.dart';
+import 'package:farmasys/screen/mask/mask_date.dart';
 import 'package:farmasys/screen/mask/mask_phone.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +18,15 @@ class ProviderMasks extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<IMaskCpf>(
-          create: (context) => MaskCpf(),
+          create: (ctx) => MaskCpf(),
           lazy: true,
         ),
         Provider<IMaskTelefone>(
-          create: (context) => MaskTelefone(),
+          create: (ctx) => MaskTelefone(),
+          lazy: true,
+        ),
+        Provider<IMaskDate>(
+          create: (ctx) => MaskDate(),
           lazy: true,
         ),
       ],

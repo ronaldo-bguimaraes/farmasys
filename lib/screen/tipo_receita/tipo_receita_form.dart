@@ -1,90 +1,139 @@
 import 'package:farmasys/dto/tipo_receita.dart';
 import 'package:farmasys/exception/exception_message.dart';
-import 'package:farmasys/screen/helper/full_scroll.dart';
 import 'package:farmasys/service/interface/i_service_tipo_receita.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TipoReceitaForm extends StatefulWidget {
-  final String title;
   final TipoReceita tipoReceita;
 
-  const TipoReceitaForm({Key? key, required this.tipoReceita, required this.title}) : super(key: key);
+  const TipoReceitaForm({Key? key, required this.tipoReceita}) : super(key: key);
 
   @override
   State<TipoReceitaForm> createState() => _TipoReceitaFormState();
+
+  static Future<TipoReceita?> show(BuildContext ctx, [TipoReceita? tipoReceita]) async {
+    return await showDialog<TipoReceita?>(
+      context: ctx,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('${tipoReceita == null ? "Cadastrar" : "Editar"} tipo de receita'),
+          content: TipoReceitaForm(
+            tipoReceita: tipoReceita ?? TipoReceita(),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _TipoReceitaFormState extends State<TipoReceitaForm> {
   final _formKey = GlobalKey<FormState>();
 
+  late TipoReceita _tipoReceita;
+  final _nomeController = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: FullScroll(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: widget.tipoReceita.descricao,
-                  onSaved: (value) {
-                    if (value != null) {
-                      widget.tipoReceita.descricao = value;
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Nome',
+  void initState() {
+    super.initState();
+    _tipoReceita = widget.tipoReceita;
+    _nomeController.text = _tipoReceita.nome;
+  }
+
+  @override
+  Widget build(BuildContext ctx) {
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: 300,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nomeController,
+                onChanged: (value) {
+                  _nomeController.value = TextEditingValue(
+                    text: value.toUpperCase(),
+                    selection: _nomeController.selection,
+                  );
+                  setState(() {
+                    _tipoReceita.nome = value.trim().toUpperCase();
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'O nome não pode ser vazio';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  TextButton(
+                    child: const Text(
+                      'Cancelar',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    onPressed: () async {
+                      Navigator.of(ctx).pop();
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(10),
+                    ),
                   ),
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'A descrição não pode ser vazia';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                ElevatedButton(
-                  child: const Text('Salvar'),
-                  onPressed: () async {
-                    var state = _formKey.currentState;
-                    if (state != null) {
-                      state.save();
-                    }
-                    if (state != null && state.validate()) {
-                      try {
-                        await context.read<IServiceTipoReceita>().save(widget.tipoReceita);
-                        Navigator.of(context).pop();
-                      }
-                      //
-                      on ExceptionMessage catch (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(error.message),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        );
-                        Navigator.of(context).pop();
-                      }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(20),
+                  const SizedBox(
+                    width: 15,
                   ),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-            ),
+                  TextButton(
+                    child: const Text(
+                      'Salvar',
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+                    onPressed: () async {
+                      final state = _formKey.currentState;
+                      if (state != null && state.validate()) {
+                        try {
+                          _tipoReceita = await ctx.read<IServiceTipoReceita>().save(_tipoReceita);
+                          //
+                          ScaffoldMessenger.of(ctx).showSnackBar(
+                            const SnackBar(
+                              content: Text('Tipo de receita salvo com sucesso.'),
+                              duration: Duration(milliseconds: 1200),
+                            ),
+                          );
+                          Navigator.of(ctx).pop(_tipoReceita);
+                        }
+                        //
+                        on ExceptionMessage catch (error) {
+                          ScaffoldMessenger.of(ctx).showSnackBar(
+                            SnackBar(
+                              content: Text('Erro: ${error.message}'),
+                              duration: const Duration(milliseconds: 1200),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(10),
+                    ),
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.end,
+              ),
+            ],
           ),
         ),
       ),

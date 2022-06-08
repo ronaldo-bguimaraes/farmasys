@@ -6,7 +6,7 @@ class MapperEspecialidade implements IMapperEspecialidade {
   Map<String, dynamic> toMap(Especialidade especialidade) {
     return {
       'id': especialidade.id,
-      'descricao': especialidade.descricao.trim(),
+      'nome': especialidade.nome.trim(),
     };
   }
 
@@ -14,7 +14,7 @@ class MapperEspecialidade implements IMapperEspecialidade {
   Especialidade fromMap(Map<String, dynamic> map) {
     return Especialidade(
       id: map['id'],
-      descricao: map['descricao'],
+      nome: map['nome'],
     );
   }
 }

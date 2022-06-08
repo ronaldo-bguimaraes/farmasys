@@ -1,37 +1,46 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
-import 'package:farmasys/repository/interface/i_repository_base.dart';
+import 'package:farmasys/exception/exception_message.dart';
+import 'package:farmasys/repository/interface/i_repository.dart';
 import 'package:farmasys/service/interface/i_service_entity.dart';
 
 abstract class ServiceEntityBase<T extends IEntity> implements IServiceEntity<T> {
-  final IRepositoryBase<T> _repositoryEntity;
+  final IRepository<T> _repositoryEntity;
 
   ServiceEntityBase(this._repositoryEntity);
 
   @override
-  Future<List<T>> all() async {
-    return await _repositoryEntity.all();
+  Future<List<T>> getAll([IEntity? relatedEntity]) async {
+    return await _repositoryEntity.getAll(relatedEntity);
   }
 
   @override
-  Future<void> remove(T entity) async {
-    _repositoryEntity.remove(entity);
-  }
-
-  @override
-  Future<T?> getById(String id) async {
-    return _repositoryEntity.getById(id);
-  }
-
-  @override
-  Future<void> save(T entity) async {
-    if (entity.id == null) {
-      return _repositoryEntity.add(entity);
+  Future<void> remove(T entity, [IEntity? relatedEntity]) async {
+    final entityId = entity.id;
+    if (entityId == null) {
+      throw ExceptionMessage(
+        code: 'id-nulo',
+        message: 'O id não pode ser nulo.',
+      );
     }
-    return _repositoryEntity.update(entity);
+    _repositoryEntity.remove(entity, relatedEntity);
   }
 
   @override
-  Stream<List<T>> streamAll() {
-    return _repositoryEntity.streamAll();
+  Future<T?> getById(String? id, [IEntity? relatedEntity]) async {
+    return _repositoryEntity.getById(id, relatedEntity);
+  }
+
+  @override
+  Future<T> save(T entity, [IEntity? relatedEntity]) async {
+    if (entity.id == null) {
+      return await _repositoryEntity.add(entity, relatedEntity);
+    }
+    //
+    return await _repositoryEntity.set(entity, relatedEntity);
+  }
+
+  @override
+  Stream<List<T>> streamAll([IEntity? relatedEntity]) {
+    return _repositoryEntity.streamAll(relatedEntity);
   }
 }

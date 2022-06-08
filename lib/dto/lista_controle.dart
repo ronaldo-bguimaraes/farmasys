@@ -1,14 +1,26 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
+import 'package:farmasys/dto/tipo_notificacao.dart';
+import 'package:farmasys/dto/tipo_receita.dart';
 
 class ListaControle implements IEntity {
   @override
   String? id;
-  String descricao;
-  int dispensacaoMaxima;
+  String nome;
+  int duracaoTratamento;
+  int prazo;
+  String? tipoReceitaId;
+  TipoReceita? tipoReceita;
+  String? tipoNotificacaoId;
+  TipoNotificacao? tipoNotificacao;
 
   ListaControle({
     this.id,
-    required this.descricao,
-    required this.dispensacaoMaxima,
+    this.nome = '',
+    this.duracaoTratamento = 0,
+    this.prazo = 0,
+    this.tipoReceitaId,
+    this.tipoReceita,
+    this.tipoNotificacaoId,
+    this.tipoNotificacao,
   });
 }

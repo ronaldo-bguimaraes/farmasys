@@ -18,7 +18,7 @@ class _TiposInicioState extends State<TiposInicio> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return DefaultTabController(
       child: Scaffold(
         appBar: AppBar(

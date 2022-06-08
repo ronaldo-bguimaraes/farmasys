@@ -25,7 +25,7 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -35,7 +35,7 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
             children: [
               Icon(
                 Icons.local_hospital,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(ctx).primaryColor,
                 size: 50,
               ),
               const SizedBox(
@@ -53,10 +53,10 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
               ),
               TextFormField(
                 initialValue: _farmaceutico.email,
-                onSaved: (value) {
-                  if (value != null) {
+                onChanged: (value) {
+                  setState(() {
                     _farmaceutico.email = value;
-                  }
+                  });
                 },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -78,8 +78,10 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
               ),
               TextFormField(
                 initialValue: _farmaceutico.senha,
-                onSaved: (value) {
-                  _farmaceutico.senha = value;
+                onChanged: (value) {
+                  setState(() {
+                    _farmaceutico.senha = value;
+                  });
                 },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -100,35 +102,28 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
                 height: 15,
               ),
               ElevatedButton(
-                child: const Text('Entrar como Farmacêutico'),
+                child: const Text('Entrar como farmacêutico'),
                 onPressed: () async {
-                  var state = _formKey.currentState;
-                  if (state != null) {
-                    state.save();
-                  }
+                  final state = _formKey.currentState;
                   if (state != null && state.validate()) {
                     try {
-                      await context.read<IServiceFarmaceutico>().signIn(_farmaceutico);
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        Home.routeName,
-                        (_) => false,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      await ctx.read<IServiceFarmaceutico>().signIn(_farmaceutico);
+                      Home.show(ctx);
+                      ScaffoldMessenger.of(ctx).showSnackBar(
                         const SnackBar(
-                          content: Text('Login realizado com sucesso!'),
-                          duration: Duration(seconds: 1),
+                          content: Text('Login realizado com sucesso.'),
+                          duration: Duration(milliseconds: 1200),
                         ),
                       );
                     }
                     //
                     on ExceptionMessage catch (error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      ScaffoldMessenger.of(ctx).showSnackBar(
                         SnackBar(
-                          content: Text(error.message),
-                          duration: const Duration(seconds: 1),
+                          content: Text('Erro: ${error.message}'),
+                          duration: const Duration(milliseconds: 1200),
                         ),
                       );
-                      Navigator.of(context).pop();
                     }
                   }
                 },
@@ -142,7 +137,7 @@ class _FarmaceuticoSignInState extends State<FarmaceuticoSignIn> {
               TextButton(
                 child: const Text('Crie uma conta'),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
+                  Navigator.of(ctx).pushNamed(
                     FarmaceuticoSignUp.routeName,
                   );
                 },

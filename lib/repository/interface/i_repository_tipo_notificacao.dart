@@ -1,4 +1,4 @@
 import 'package:farmasys/dto/tipo_notificacao.dart';
-import 'package:farmasys/repository/interface/i_repository_base.dart';
+import 'package:farmasys/repository/interface/i_repository.dart';
 
-abstract class IRepositoryTipoNotificacao<T extends TipoNotificacao> extends IRepositoryBase<T> {}
+abstract class IRepositoryTipoNotificacao extends IRepository<TipoNotificacao> {}

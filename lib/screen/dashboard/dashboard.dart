@@ -2,6 +2,7 @@ import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/screen/cliente/cliente_list.dart';
 import 'package:farmasys/screen/dashboard/dashboard_item.dart';
 import 'package:farmasys/screen/farmaceutico/farmaceutico_sign_in.dart';
+import 'package:farmasys/screen/helper/empty_pedicate.dart';
 import 'package:farmasys/screen/medicamento/medicamento_inicio.dart';
 import 'package:farmasys/screen/medico/medico_inicio.dart';
 import 'package:farmasys/screen/tipo_receita/tipo_receita_inicio.dart';
@@ -22,68 +23,65 @@ class _DashboardState extends State<Dashboard> {
       title: 'Medicos',
       subTitle: 'Lista de Médicos',
       assetName: './assets/images/medico.png',
-      event: (context) {
-        Navigator.of(context).pushNamed(MedicoInicio.routeName);
+      event: (ctx) {
+        Navigator.of(ctx).pushNamed(MedicoInicio.routeName);
       },
     ),
     DashboardItem(
       title: 'Clientes',
       subTitle: 'Lista de clientes',
       assetName: './assets/images/cliente.png',
-      event: (context) {
-        Navigator.of(context).pushNamed(ClienteList.routeName);
+      event: (ctx) {
+        Navigator.of(ctx).pushNamed(ClienteList.routeName);
       },
     ),
     DashboardItem(
       title: 'Tipos',
       subTitle: 'Tipos de receita, notificação',
       assetName: './assets/images/receita.png',
-      event: (context) {
-        Navigator.of(context).pushNamed(TiposInicio.routeName);
+      event: (ctx) {
+        Navigator.of(ctx).pushNamed(TiposInicio.routeName);
       },
     ),
     DashboardItem(
       title: 'Medicamentos',
-      subTitle: 'Listas de medicamentos, substâncias e controle',
+      subTitle: 'Listas de medicamentos, princípios ativos e controle',
       assetName: './assets/images/medicamento.png',
-      event: (context) {
-        Navigator.of(context).pushNamed(MedicamentoInicio.routeName);
+      event: (ctx) {
+        Navigator.of(ctx).pushNamed(MedicamentoInicio.routeName);
       },
     ),
     DashboardItem(
       title: 'Sair',
       subTitle: 'Fazer logout',
       assetName: './assets/images/sair.png',
-      event: (context) async {
+      event: (ctx) async {
         try {
-          await context.read<IServiceFarmaceutico>().signOut();
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            FarmaceuticoSignIn.routeName,
-            (_) => false,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
+          await ctx.read<IServiceFarmaceutico>().signOut();
+          Navigator.of(ctx).pushNamedAndRemoveUntil(FarmaceuticoSignIn.routeName, emptyPredicate);
+          ScaffoldMessenger.of(ctx).showSnackBar(
             const SnackBar(
-              content: Text('Logout realizado com sucesso!'),
-              duration: Duration(seconds: 1),
+              content: Text('Logout realizado com sucesso.'),
+              duration: Duration(milliseconds: 1200),
             ),
           );
         }
         //
         on ExceptionMessage catch (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
-              content: Text(error.message),
-              duration: const Duration(seconds: 1),
+              content: Text('Erro: ${error.message}'),
+              duration: const Duration(milliseconds: 1200),
             ),
           );
-          Navigator.of(context).pop();
+          Navigator.of(ctx).pop();
         }
       },
     ),
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menu de Opções'),
@@ -98,7 +96,7 @@ class _DashboardState extends State<Dashboard> {
             mainAxisSpacing: 5,
             crossAxisSpacing: 5,
           ),
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (BuildContext ctx, int index) {
             return GestureDetector(
               child: Card(
                 margin: EdgeInsets.zero,
@@ -125,6 +123,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Text(
                         _list[index].subTitle,
+                        style: const TextStyle(
+                          fontSize: 15,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -133,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               onTap: () {
-                _list[index].event(context);
+                _list[index].event(ctx);
               },
             );
           },

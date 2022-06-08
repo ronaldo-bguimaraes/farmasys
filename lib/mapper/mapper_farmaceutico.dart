@@ -6,11 +6,10 @@ class MapperFarmaceutico implements IMapperFarmaceutico {
   Map<String, dynamic> toMap(Farmaceutico farmaceutico) {
     return {
       'id': farmaceutico.id,
-      'cpf': farmaceutico.cpf?.trim(),
-      'nome': farmaceutico.nome?.trim(),
-      'telefone': farmaceutico.telefone?.trim(),
+      'cpf': farmaceutico.cpf.trim(),
+      'nome': farmaceutico.nome.trim(),
+      'telefone': farmaceutico.telefone.trim(),
       'email': farmaceutico.email.trim(),
-      'senha': farmaceutico.senha?.trim(),
     };
   }
 
@@ -22,7 +21,6 @@ class MapperFarmaceutico implements IMapperFarmaceutico {
       nome: map['nome'],
       telefone: map['telefone'],
       email: map['email'],
-      senha: map['senha'],
     );
   }
 }

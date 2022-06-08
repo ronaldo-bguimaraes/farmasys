@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class StreamFutureBuilder<T> extends StatelessWidget {
   final Stream<Future<T>> stream;
-
   final AsyncWidgetBuilder<T> builder;
 
   const StreamFutureBuilder({Key? key, required this.stream, required this.builder}) : super(key: key);
@@ -11,7 +10,7 @@ class StreamFutureBuilder<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<Future<T>>(
       stream: stream,
-      builder: (context, snapshot) {
+      builder: (ctx, snapshot) {
         return FutureBuilder<T>(
           future: snapshot.data,
           builder: builder,

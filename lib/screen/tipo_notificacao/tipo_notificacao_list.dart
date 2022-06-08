@@ -1,5 +1,5 @@
 import 'package:farmasys/dto/tipo_notificacao.dart';
-import 'package:farmasys/screen/component/custom_listview.dart';
+import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
 import 'package:farmasys/screen/tipo_notificacao/tipo_notificacao_form.dart';
 import 'package:farmasys/service/interface/i_service_tipo_notificacao.dart';
@@ -17,59 +17,66 @@ class TipoNotificacaoList extends StatefulWidget {
 
 class _TipoNotificacaoListState extends State<TipoNotificacaoList> {
   @override
-  Widget build(BuildContext context) {
-    return Consumer<IServiceTipoNotificacao>(
-      builder: (context, serviceTipoNotificacao, _) {
-        return Scaffold(
-          body: StreamSnapshotBuilder<List<TipoNotificacao>>(
-            stream: serviceTipoNotificacao.streamAll(),
-            isEmpty: (data) {
-              return data == null || data.isEmpty;
-            },
-            builder: (context, tipoNotificacao) {
-              return CustomListView<TipoNotificacao>(
-                data: tipoNotificacao,
-                childBuilder: (context, tipoReceita) {
-                  return Text(
-                    tipoReceita.descricao,
-                  );
-                },
-                onTapEdit: (context, tipoNotificacao) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => TipoNotificacaoForm(
-                        title: 'Editar Notificação',
-                        tipoNotificacao: tipoNotificacao,
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      body: StreamSnapshotBuilder<List<TipoNotificacao>>(
+        stream: ctx.read<IServiceTipoNotificacao>().streamAll(),
+        showChild: (tiposNotificacao) {
+          return tiposNotificacao != null && tiposNotificacao.isNotEmpty;
+        },
+        builder: (ctx, tiposNotificacao) {
+          return EntityListView<TipoNotificacao>(
+            items: tiposNotificacao,
+            childBuilder: (ctx, tipoNotificacao) {
+              return Row(
+                children: [
+                  Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: tipoNotificacao.cor.value,
+                      border: Border.all(
+                        width: 1,
+                        color: Colors.grey,
                       ),
-                    ),
-                  );
-                },
-                onAcceptDelete: (context, tipoNotificacao) async {
-                  serviceTipoNotificacao.remove(tipoNotificacao).whenComplete(() {
-                    Navigator.of(context).pop();
-                  });
-                },
-              );
-            },
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => TipoNotificacaoForm(
-                    title: 'Editar Notificação',
-                    tipoNotificacao: TipoNotificacao(
-                      descricao: '',
-                      validade: 0,
+                      shape: BoxShape.circle,
                     ),
                   ),
-                ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          tipoNotificacao.nome,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Cor: ${tipoNotificacao.cor.name.toUpperCase()}',
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        )
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    ),
+                  ),
+                ],
               );
             },
-            child: const Icon(Icons.add),
-          ),
-        );
-      },
+            editShow: TipoNotificacaoForm.show,
+            removeAction: ctx.read<IServiceTipoNotificacao>().remove,
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          TipoNotificacaoForm.show(ctx);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

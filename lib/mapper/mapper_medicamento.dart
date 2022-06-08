@@ -11,6 +11,7 @@ class MapperMedicamento implements IMapperMedicamento {
       'miligramas': medicamento.miligramas.toDouble(),
       'preco': medicamento.preco.toDouble(),
       'quantidade': medicamento.quantidade.toInt(),
+      'comprimidos': medicamento.comprimidos.toInt(),
     };
   }
 
@@ -23,6 +24,7 @@ class MapperMedicamento implements IMapperMedicamento {
       miligramas: map['miligramas'].toDouble(),
       preco: map['preco'].toDouble(),
       quantidade: map['quantidade'].toInt(),
+      comprimidos: map['comprimidos'].toInt(),
     );
   }
 }

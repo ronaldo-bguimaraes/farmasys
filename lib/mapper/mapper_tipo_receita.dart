@@ -6,8 +6,7 @@ class MapperTipoReceita implements IMapperTipoReceita {
   Map<String, dynamic> toMap(TipoReceita tipoReceita) {
     return {
       'id': tipoReceita.id,
-      'descricao': tipoReceita.descricao,
-      'validade': tipoReceita.validade.toInt(),
+      'nome': tipoReceita.nome,
     };
   }
 
@@ -15,8 +14,7 @@ class MapperTipoReceita implements IMapperTipoReceita {
   TipoReceita fromMap(Map<String, dynamic> map) {
     return TipoReceita(
       id: map['id'],
-      descricao: map['descricao'],
-      validade: map['validade'].toInt(),
+      nome: map['nome'],
     );
   }
 }

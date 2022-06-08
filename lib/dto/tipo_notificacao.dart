@@ -1,14 +1,15 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
+import 'package:farmasys/enum/cor.dart';
 
 class TipoNotificacao implements IEntity {
   @override
   String? id;
-  String descricao;
-  int validade;
+  String nome;
+  Cor cor;
 
   TipoNotificacao({
     this.id,
-    required this.descricao,
-    required this.validade,
+    this.nome = '',
+    this.cor = Cor.branca,
   });
 }

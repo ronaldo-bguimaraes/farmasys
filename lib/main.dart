@@ -1,7 +1,6 @@
 import 'package:farmasys/firebase_options.dart';
 import 'package:farmasys/provider/provider_dependencies.dart';
 import 'package:farmasys/screen/cliente/cliente_list.dart';
-import 'package:farmasys/screen/home/home.dart';
 import 'package:farmasys/screen/medicamento/medicamento_inicio.dart';
 import 'package:farmasys/screen/medico/medico_inicio.dart';
 import 'package:farmasys/screen/tipo_receita/tipo_receita_inicio.dart';
@@ -33,7 +32,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return MaterialApp(
       title: 'FarmaSys',
       theme: ThemeData(
@@ -41,13 +40,12 @@ class _MainState extends State<Main> {
       ),
       initialRoute: FarmaceuticoSignIn.routeName,
       routes: {
-        Home.routeName: (context) => const Home(),
-        FarmaceuticoSignIn.routeName: (context) => const FarmaceuticoSignIn(),
-        FarmaceuticoSignUp.routeName: (context) => const FarmaceuticoSignUp(),
-        MedicoInicio.routeName: (context) => const MedicoInicio(),
-        ClienteList.routeName: (context) => const ClienteList(),
-        TiposInicio.routeName: (context) => const TiposInicio(),
-        MedicamentoInicio.routeName: (context) => const MedicamentoInicio(),
+        FarmaceuticoSignIn.routeName: (ctx) => const FarmaceuticoSignIn(),
+        FarmaceuticoSignUp.routeName: (ctx) => const FarmaceuticoSignUp(),
+        MedicoInicio.routeName: (ctx) => const MedicoInicio(),
+        ClienteList.routeName: (ctx) => const ClienteList(),
+        TiposInicio.routeName: (ctx) => const TiposInicio(),
+        MedicamentoInicio.routeName: (ctx) => const MedicamentoInicio(),
       },
       debugShowCheckedModeBanner: false,
     );

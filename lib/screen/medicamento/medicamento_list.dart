@@ -1,11 +1,8 @@
 import 'package:farmasys/dto/medicamento.dart';
-import 'package:farmasys/dto/substancia.dart';
-import 'package:farmasys/screen/builder/future_snapshot_builder.dart';
-import 'package:farmasys/screen/component/custom_listview.dart';
+import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
 import 'package:farmasys/screen/medicamento/medicamento_form.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
-import 'package:farmasys/service/interface/i_service_substancia.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,82 +17,52 @@ class MedicamentoList extends StatefulWidget {
 
 class _MedicamentoListState extends State<MedicamentoList> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Scaffold(
       body: StreamSnapshotBuilder<List<Medicamento>>(
-        stream: context.read<IServiceMedicamento>().streamAll(),
-        isEmpty: (medicamentos) {
-          return medicamentos == null || medicamentos.isEmpty;
+        stream: ctx.read<IServiceMedicamento>().streamAll(),
+        showChild: (medicamentos) {
+          return medicamentos != null && medicamentos.isNotEmpty;
         },
-        builder: (context, medicamentos) {
-          return CustomListView<Medicamento>(
-            data: medicamentos,
-            childBuilder: (context, medicamento) {
-              return ListTile(
-                title: Text(
-                  '${medicamento.nome} ${medicamento.miligramas}mg',
+        builder: (ctx, medicamentos) {
+          return EntityListView<Medicamento>(
+            items: medicamentos,
+            childBuilder: (ctx, medicamento) {
+              return Column(children: [
+                Text(
+                  '${medicamento.nome} ${medicamento.miligramas} mg',
+                  style: const TextStyle(fontSize: 18),
                 ),
-                subtitle: Text(
+                const SizedBox(height: 10),
+                Text(
+                  'Princípio ativo: ${medicamento.principioAtivo?.nome}',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Compromidos por caixa: ${medicamento.comprimidos}',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 10),
+                Text(
                   'Quantidade Disponível: ${medicamento.quantidade} unidades',
+                  style: TextStyle(color: Colors.grey[600]),
                 ),
-                contentPadding: EdgeInsets.zero,
-              );
-            },
-            onTapEdit: (context, medicamento) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return FutureSnapshotBuilder<List<Substancia>>(
-                      future: context.read<IServiceSubstancia>().all(),
-                      showChild: (substancias) {
-                        return substancias == null;
-                      },
-                      builder: (context, substancias) {
-                        return MedicamentoForm(
-                          title: 'Editar Medicamento',
-                          medicamento: medicamento,
-                          substancias: substancias,
-                        );
-                      },
-                    );
-                  },
+                const SizedBox(height: 10),
+                Text(
+                  'Preço: R\$ ${medicamento.preco}',
+                  style: TextStyle(color: Colors.grey[600]),
                 ),
-              );
+              ], crossAxisAlignment: CrossAxisAlignment.stretch);
             },
-            onAcceptDelete: (context, data) async {
-              context.read<IServiceMedicamento>().remove(data).whenComplete(() {
-                Navigator.of(context).pop();
-              });
-            },
+            editShow: MedicamentoForm.show,
+            removeAction: ctx.read<IServiceMedicamento>().remove,
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return FutureSnapshotBuilder<List<Substancia>>(
-                  future: context.read<IServiceSubstancia>().all(),
-                  showChild: (substancias) {
-                    return substancias == null;
-                  },
-                  builder: (context, substancias) {
-                    return MedicamentoForm(
-                      title: 'Editar Medicamento',
-                      medicamento: Medicamento(
-                        nome: '',
-                        miligramas: 0,
-                        preco: 0,
-                        quantidade: 0,
-                      ),
-                      substancias: substancias,
-                    );
-                  },
-                );
-              },
-            ),
-          );
+          MedicamentoForm.show(ctx);
         },
         child: const Icon(Icons.add),
       ),

@@ -10,9 +10,9 @@ class Cliente implements IEntity {
 
   Cliente({
     this.id,
-    required this.nome,
-    required this.cpf,
-    required this.telefone,
-    required this.email,
+    this.nome = '',
+    this.cpf = '',
+    this.telefone = '',
+    this.email = '',
   });
 }

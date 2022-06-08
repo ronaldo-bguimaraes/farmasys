@@ -1,5 +1,5 @@
 import 'package:farmasys/dto/lista_controle.dart';
-import 'package:farmasys/screen/component/custom_listview.dart';
+import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/lista_controle/lista_controle_form.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
 import 'package:farmasys/service/interface/i_service_lista_controle.dart';
@@ -17,67 +17,52 @@ class ListaControleList extends StatefulWidget {
 
 class _ListaControleListState extends State<ListaControleList> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Scaffold(
       body: StreamSnapshotBuilder<List<ListaControle>>(
-        stream: context.read<IServiceListaControle>().streamAll(),
-        isEmpty: (data) {
-          return data == null || data.isEmpty;
+        stream: ctx.read<IServiceListaControle>().streamAll(),
+        showChild: (listasControle) {
+          return listasControle != null && listasControle.isNotEmpty;
         },
-        builder: (context, listaControle) {
-          return CustomListView<ListaControle>(
-            data: listaControle,
-            childBuilder: (context, listaControle) {
+        builder: (ctx, listasControle) {
+          return EntityListView<ListaControle>(
+            items: listasControle,
+            childBuilder: (ctx, listaControle) {
+              final tipoReceita = listaControle.tipoReceita;
+              final tipoNotificacao = listaControle.tipoNotificacao;
               return Column(
                 children: [
                   Text(
-                    listaControle.descricao,
+                    '${listaControle.nome} - ${tipoNotificacao != null ? "Notificação ${tipoNotificacao.nome}" : "Sem notificação"}',
                     style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Dispensação máxima: ${listaControle.dispensacaoMaxima}',
+                    'Tipo de receita: ${tipoReceita?.nome}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Duração de tratamento: ${listaControle.duracaoTratamento} dias',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Prazo de validade da receita: ${listaControle.prazo} dias',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.stretch,
               );
             },
-            onTapEdit: (context, data) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ListaControleForm(
-                      title: 'Editar lista de controle',
-                      listaControle: data,
-                    );
-                  },
-                ),
-              );
-            },
-            onAcceptDelete: (context, listaControle) async {
-              context.read<IServiceListaControle>().remove(listaControle).whenComplete(() {
-                Navigator.of(context).pop();
-              });
-            },
+            editShow: ListaControleForm.show,
+            removeAction: ctx.read<IServiceListaControle>().remove,
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return ListaControleForm(
-                  title: 'Editar lista de controle',
-                  listaControle: ListaControle(
-                    descricao: '',
-                    dispensacaoMaxima: 0,
-                  ),
-                );
-              },
-            ),
-          );
+          ListaControleForm.show(ctx);
         },
         child: const Icon(Icons.add),
       ),

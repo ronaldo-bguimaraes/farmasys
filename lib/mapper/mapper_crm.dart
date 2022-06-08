@@ -5,7 +5,7 @@ class MapperCRM implements IMapperCRM {
   @override
   Map<String, dynamic> toMap(CRM crm) {
     return {
-      'uf': crm.uf.trim(),
+      'uf': crm.uf?.trim(),
       'codigo': crm.codigo.trim(),
     };
   }

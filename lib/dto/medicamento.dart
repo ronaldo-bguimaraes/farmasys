@@ -1,5 +1,5 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
-import 'package:farmasys/dto/substancia.dart';
+import 'package:farmasys/dto/principio_ativo.dart';
 
 class Medicamento implements IEntity {
   @override
@@ -9,15 +9,17 @@ class Medicamento implements IEntity {
   double preco;
   int quantidade;
   String? principioAtivoId;
-  Substancia? principioAtivo;
+  PrincipioAtivo? principioAtivo;
+  int comprimidos;
 
   Medicamento({
-    String? id,
-    required this.nome,
-    required this.miligramas,
-    required this.preco,
-    required this.quantidade,
+    this.id,
+    this.nome = '',
+    this.miligramas = 0,
+    this.preco = 0,
+    this.quantidade = 0,
     this.principioAtivoId,
     this.principioAtivo,
+    this.comprimidos = 0,
   });
 }

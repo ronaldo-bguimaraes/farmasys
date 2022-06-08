@@ -6,8 +6,11 @@ class MapperListaControle implements IMapperListaControle {
   Map<String, dynamic> toMap(ListaControle listaControle) {
     return {
       'id': listaControle.id,
-      'descricao': listaControle.descricao.trim(),
-      'dispensacaoMaxima': listaControle.dispensacaoMaxima.toInt(),
+      'nome': listaControle.nome.trim(),
+      'prazo': listaControle.prazo.toInt(),
+      'duracaoTratamento': listaControle.duracaoTratamento.toInt(),
+      'tipoReceitaId': listaControle.tipoReceitaId,
+      'tipoNotificacaoId': listaControle.tipoNotificacaoId,
     };
   }
 
@@ -15,8 +18,11 @@ class MapperListaControle implements IMapperListaControle {
   ListaControle fromMap(Map<String, dynamic> map) {
     return ListaControle(
       id: map['id'],
-      descricao: map['descricao'],
-      dispensacaoMaxima: map['dispensacaoMaxima'].toInt(),
+      nome: map['nome'],
+      prazo: map['prazo'].toInt(),
+      duracaoTratamento: map['duracaoTratamento'].toInt(),
+      tipoReceitaId: map['tipoReceitaId'],
+      tipoNotificacaoId: map['tipoNotificacaoId'],
     );
   }
 }

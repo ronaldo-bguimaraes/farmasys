@@ -5,7 +5,7 @@ class MapperCodigo implements IMapperCodigo {
   @override
   Map<String, dynamic> toMap(Codigo codigo) {
     return {
-      'uf': codigo.uf.trim(),
+      'uf': codigo.uf?.trim(),
       'codigo': codigo.codigo.trim(),
     };
   }

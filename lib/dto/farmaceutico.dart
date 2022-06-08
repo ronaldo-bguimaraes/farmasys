@@ -5,21 +5,21 @@ class Farmaceutico implements IUsuario {
   @override
   String? id;
   @override
-  String? nome;
+  String nome;
   @override
-  String? telefone;
+  String telefone;
   @override
   String email;
   @override
-  String? senha;
-  String? cpf;
+  String senha;
+  String cpf;
 
   Farmaceutico({
     this.id,
-    this.nome,
-    this.telefone,
-    required this.email,
-    this.senha,
-    this.cpf,
+    this.nome = '',
+    this.telefone = '',
+    this.email = '',
+    this.senha = '',
+    this.cpf = '',
   });
 }

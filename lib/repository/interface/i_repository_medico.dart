@@ -1,4 +1,7 @@
+import 'package:farmasys/dto/especialidade.dart';
 import 'package:farmasys/dto/medico.dart';
-import 'package:farmasys/repository/interface/i_repository_base.dart';
+import 'package:farmasys/repository/interface/i_repository.dart';
 
-abstract class IRepositoryMedico<T extends Medico> extends IRepositoryBase<T> {}
+abstract class IRepositoryMedico extends IRepository<Medico> {
+  Future<Medico?> getByEspecialidade(Especialidade especialidade);
+}

@@ -7,7 +7,7 @@ class MapperReceita implements IMapperReceita {
     return {
       'id': receita.id,
       'tipoReceitaId': receita.tipoReceitaId,
-      'itemId': receita.itemId,
+      'dataEmissao': receita.dataEmissao?.toIso8601String(),
     };
   }
 
@@ -16,7 +16,7 @@ class MapperReceita implements IMapperReceita {
     return Receita(
       id: map['id'],
       tipoReceitaId: map['tipoReceitaId'],
-      itemId: map['itemId'],
+      dataEmissao: DateTime.parse(map['dataEmissao']),
     );
   }
 }
