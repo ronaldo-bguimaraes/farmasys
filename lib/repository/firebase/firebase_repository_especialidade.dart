@@ -10,8 +10,8 @@ class FirebaseRepositoryEspecialidade extends FirebaseRepositoryBase<Especialida
   FirebaseRepositoryEspecialidade(this._mapper) : super('especialidades', _mapper);
 
   @override
-  Future<Especialidade?> getByNome(String descricao) async {
-    final query = await firestore.collection(tableName).where('nome', isEqualTo: descricao).get();
+  Future<Especialidade?> getByNome(String nome) async {
+    final query = await firestore.collection(tableName).where('nome', isEqualTo: nome).get();
     if (query.docs.isEmpty) {
       return null;
     }

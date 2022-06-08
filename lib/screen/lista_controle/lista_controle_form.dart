@@ -17,7 +17,13 @@ class ListaControleForm extends StatefulWidget {
   final List<TipoReceita> tiposReceita;
   final List<TipoNotificacao> tiposNotificacao;
 
-  const ListaControleForm({Key? key, required this.listaControle, required this.title, required this.tiposReceita, required this.tiposNotificacao}) : super(key: key);
+  const ListaControleForm({
+    Key? key,
+    required this.listaControle,
+    required this.title,
+    required this.tiposReceita,
+    required this.tiposNotificacao,
+  }) : super(key: key);
 
   @override
   State<ListaControleForm> createState() => _ListaControleFormState();

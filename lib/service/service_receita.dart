@@ -13,17 +13,18 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
 
   final IServiceItemReceita _serviceItemReceita;
 
-  ServiceReceita(this._repositoryReceita, this._serviceItemReceita) : super(_repositoryReceita);
+  ServiceReceita(
+    this._repositoryReceita,
+    this._serviceItemReceita,
+  ) : super(_repositoryReceita);
 
   @override
   Future<List<Receita>> getAll([IEntity? relatedEntity]) async {
     final receitas = await super.getAll();
-    return await Future.wait(
-      receitas.map((receita) async {
-        receita.itens = await _serviceItemReceita.getAll(receita);
-        return receita;
-      })
-    );
+    return await Future.wait(receitas.map((receita) async {
+      receita.itens = await _serviceItemReceita.getAll(receita);
+      return receita;
+    }));
   }
 
   @override
@@ -41,7 +42,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
     if (receita.itens == null) {
       throw Exception('A propriedade itens não pode ser nula.');
     }
-    for(ItemReceita item in receita.itens!) {
+    for (ItemReceita item in receita.itens!) {
       _serviceItemReceita.save(item);
     }
     return super.save(receita);

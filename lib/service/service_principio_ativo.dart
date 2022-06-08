@@ -17,7 +17,11 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
 
   final IRepositoryMedicamento _repositoryMedicamento;
 
-  ServicePrincipioAtivo(this._repositoryPrincipioAtivo, this._repositoryListaControle, this._repositoryMedicamento) : super(_repositoryPrincipioAtivo);
+  ServicePrincipioAtivo(
+    this._repositoryPrincipioAtivo,
+    this._repositoryListaControle,
+    this._repositoryMedicamento,
+  ) : super(_repositoryPrincipioAtivo);
 
   @override
   Future<List<PrincipioAtivo>> getAll([IEntity? relatedEntity]) async {
@@ -68,7 +72,26 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<PrincipioAtivo> save(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) {
+  Future<PrincipioAtivo> save(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) async {
+    final nome = principioAtivo.nome;
+    if (nome == '') {
+      throw ExceptionMessage(
+        code: 'nome-vazio',
+        message: 'O nome do princípio ativo não pode ser vazio.',
+      );
+    }
+    if (principioAtivo.id == null) {
+      if (await _repositoryPrincipioAtivo.getByNome(nome) == null) {
+        return super.save(principioAtivo);
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'existe',
+          message: 'O princípio ativo já existe.',
+        );
+      }
+    }
     return super.save(principioAtivo);
   }
 

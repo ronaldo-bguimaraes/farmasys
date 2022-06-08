@@ -10,7 +10,10 @@ abstract class FirebaseRepositoryBase<T extends IEntity> implements IRepository<
   @override
   final IMapper<T> mapper;
 
-  FirebaseRepositoryBase(this.tableName, this.mapper);
+  FirebaseRepositoryBase(
+    this.tableName,
+    this.mapper,
+  );
 
   @override
   Future<T> add(T entity, [IEntity? relatedEntity]) async {

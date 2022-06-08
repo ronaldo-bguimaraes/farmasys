@@ -15,7 +15,7 @@ import 'package:farmasys/service/interface/i_service_authentication_farmaceutico
 import 'package:farmasys/service/interface/i_service_cliente.dart';
 import 'package:farmasys/service/interface/i_service_farmaceutico.dart';
 import 'package:farmasys/service/interface/i_service_item_receita.dart';
-import 'package:farmasys/service/interface/i_service_lista_especialidade.dart';
+import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_medico.dart';
 import 'package:farmasys/service/interface/i_service_principio_ativo.dart';
@@ -43,7 +43,10 @@ import 'package:provider/provider.dart';
 class ProviderServices extends StatelessWidget {
   final Widget child;
 
-  const ProviderServices({Key? key, required this.child}) : super(key: key);
+  const ProviderServices({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

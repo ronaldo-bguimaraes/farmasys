@@ -29,8 +29,15 @@ class ReceitaAdd extends StatefulWidget {
   final List<TipoNotificacao> tiposNotificacao;
   final List<Cliente> clientes;
 
-  const ReceitaAdd({Key? key, required this.tiposReceita, required this.tiposNotificacao, required this.medicos, required this.clientes, required this.medicamentos, required this.receita})
-      : super(key: key);
+  const ReceitaAdd({
+    Key? key,
+    required this.tiposReceita,
+    required this.tiposNotificacao,
+    required this.medicos,
+    required this.clientes,
+    required this.medicamentos,
+    required this.receita,
+  }) : super(key: key);
 
   @override
   State<ReceitaAdd> createState() => _ReceitaAddState();

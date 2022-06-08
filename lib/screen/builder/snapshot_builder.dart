@@ -5,7 +5,12 @@ class SnapshotBuilder<T> extends StatelessWidget {
   final bool Function(T? data) showChild;
   final Widget Function(BuildContext ctx, T data) builder;
 
-  const SnapshotBuilder({Key? key, required this.snapshot, required this.showChild, required this.builder}) : super(key: key);
+  const SnapshotBuilder({
+    Key? key,
+    required this.snapshot,
+    required this.showChild,
+    required this.builder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,10 @@ class SnapshotBuilder<T> extends StatelessWidget {
     }
     //
     else if (showChild(snapshot.data)) {
-      return builder(context, snapshot.data!);
+      return builder(
+        context,
+        snapshot.data!,
+      );
     }
     //
     else {

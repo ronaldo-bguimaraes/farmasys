@@ -12,17 +12,18 @@ class ServiceVenda extends ServiceEntityBase<Venda> implements IServiceVenda {
 
   final IRepositoryReceita _repositoryReceita;
 
-  ServiceVenda(this._repositoryVenda, this._repositoryReceita) : super(_repositoryVenda);
+  ServiceVenda(
+    this._repositoryVenda,
+    this._repositoryReceita,
+  ) : super(_repositoryVenda);
 
   @override
   Future<List<Venda>> getAll([IEntity? relatedEntity]) async {
     final vendas = await super.getAll();
-    return await Future.wait(
-      vendas.map((venda) async {
-        venda.receita = await _repositoryReceita.getById(venda.receitaId);
-        return venda;
-      })
-    );
+    return await Future.wait(vendas.map((venda) async {
+      venda.receita = await _repositoryReceita.getById(venda.receitaId);
+      return venda;
+    }));
   }
 
   @override

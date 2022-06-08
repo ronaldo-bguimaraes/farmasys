@@ -2,7 +2,7 @@ import 'package:farmasys/dto/especialidade.dart';
 import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
 import 'package:farmasys/screen/especialidade/especialidade_form.dart';
-import 'package:farmasys/service/interface/i_service_lista_especialidade.dart';
+import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

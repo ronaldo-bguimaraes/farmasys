@@ -6,7 +6,7 @@ import 'package:farmasys/service/interface/i_service_authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements IServiceAuthentication<T> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final IRepositoryUsuario<T> _repositoryUsuario;
 
   ServiceFirebaseAuthenticationBase(this._repositoryUsuario);
@@ -20,7 +20,7 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
       );
     }
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
+      final userCredential = await auth.createUserWithEmailAndPassword(
         email: usuario.email,
         password: usuario.senha,
       );
@@ -35,7 +35,7 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
 
   @override
   Future<T?> getCurrentUser() async {
-    return await _repositoryUsuario.getById(_auth.currentUser!.uid);
+    return await _repositoryUsuario.getById(auth.currentUser!.uid);
   }
 
   @override
@@ -47,7 +47,7 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
       );
     }
     try {
-      final userCredential = await _auth.signInWithEmailAndPassword(
+      final userCredential = await auth.signInWithEmailAndPassword(
         email: usuario.email,
         password: usuario.senha,
       );
@@ -83,7 +83,7 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
   @override
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      await auth.signOut();
     }
     //
     on FirebaseAuthException catch (error) {

@@ -11,6 +11,19 @@ class FirebaseRepositoryListaControle extends FirebaseRepositoryBase<ListaContro
   FirebaseRepositoryListaControle(this._mapper) : super('listasControle', _mapper);
 
   @override
+  Future<ListaControle?> getByNome(String nome) async {
+    final query = await firestore.collection(tableName).where('nome', isEqualTo: nome).get();
+    if (query.docs.isEmpty) {
+      return null;
+    }
+    final map = query.docs.first.data();
+    map.addAll({
+      'id': query.docs.first.id,
+    });
+    return mapper.fromMap(map);
+  }
+
+  @override
   Future<ListaControle?> getByTipoNotificacao(TipoNotificacao tipoNotificacao) async {
     final query = await firestore.collection(tableName).where('tipoNotificacaoId', isEqualTo: tipoNotificacao.id).get();
     if (query.docs.isEmpty) {

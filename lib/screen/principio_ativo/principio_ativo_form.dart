@@ -14,7 +14,12 @@ class PrincipioAtivoForm extends StatefulWidget {
   final PrincipioAtivo principioAtivo;
   final List<ListaControle> listasControle;
 
-  const PrincipioAtivoForm({Key? key, required this.principioAtivo, required this.listasControle, required this.title}) : super(key: key);
+  const PrincipioAtivoForm({
+    Key? key,
+    required this.principioAtivo,
+    required this.listasControle,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<PrincipioAtivoForm> createState() => _PrincipioAtivoFormState();

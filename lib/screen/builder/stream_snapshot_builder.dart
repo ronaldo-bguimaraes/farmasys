@@ -6,7 +6,12 @@ class StreamSnapshotBuilder<T> extends StatelessWidget {
   final bool Function(T? data) showChild;
   final Widget Function(BuildContext ctx, T data) builder;
 
-  const StreamSnapshotBuilder({Key? key, required this.stream, required this.showChild, required this.builder}) : super(key: key);
+  const StreamSnapshotBuilder({
+    Key? key,
+    required this.stream,
+    required this.showChild,
+    required this.builder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

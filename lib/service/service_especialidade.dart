@@ -4,7 +4,7 @@ import 'package:farmasys/dto/medico.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_especialidade.dart';
 import 'package:farmasys/repository/interface/i_repository_medico.dart';
-import 'package:farmasys/service/interface/i_service_lista_especialidade.dart';
+import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:farmasys/service/service_entity_base.dart';
 
 class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements IServiceEspecialidade {
@@ -13,7 +13,10 @@ class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements I
 
   final IRepositoryMedico _repositoryMedico;
 
-  ServiceEspecialidade(this._repositoryEspecialidade, this._repositoryMedico) : super(_repositoryEspecialidade);
+  ServiceEspecialidade(
+    this._repositoryEspecialidade,
+    this._repositoryMedico,
+  ) : super(_repositoryEspecialidade);
 
   @override
   Future<List<Especialidade>> getAll([IEntity? relatedEntity]) async {

@@ -13,7 +13,12 @@ class MedicamentoForm extends StatefulWidget {
   final Medicamento medicamento;
   final List<PrincipioAtivo> principiosAtivos;
 
-  const MedicamentoForm({Key? key, required this.medicamento, required this.title, required this.principiosAtivos}) : super(key: key);
+  const MedicamentoForm({
+    Key? key,
+    required this.medicamento,
+    required this.title,
+    required this.principiosAtivos,
+  }) : super(key: key);
 
   @override
   State<MedicamentoForm> createState() => _MedicamentoFormState();

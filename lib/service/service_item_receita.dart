@@ -12,7 +12,10 @@ class ServiceItemReceita extends ServiceEntityBase<ItemReceita> implements IServ
 
   final IRepositoryMedicamento _repositoryMedicamento;
 
-  ServiceItemReceita(this._repositoryItemReceita, this._repositoryMedicamento) : super(_repositoryItemReceita);
+  ServiceItemReceita(
+    this._repositoryItemReceita,
+    this._repositoryMedicamento,
+  ) : super(_repositoryItemReceita);
 
   @override
   Future<List<ItemReceita>> getAll([IEntity? relatedEntity]) async {

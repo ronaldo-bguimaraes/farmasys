@@ -6,7 +6,12 @@ class FutureSnapshotBuilder<T> extends StatelessWidget {
   final bool Function(T? data) showChild;
   final Widget Function(BuildContext ctx, T data) builder;
 
-  const FutureSnapshotBuilder({Key? key, required this.future, required this.showChild, required this.builder}) : super(key: key);
+  const FutureSnapshotBuilder({
+    Key? key,
+    required this.future,
+    required this.showChild,
+    required this.builder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

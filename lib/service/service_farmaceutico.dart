@@ -11,7 +11,10 @@ class ServiceFarmaceutico extends ServiceUsuario<Farmaceutico> implements IServi
   // ignore: unused_field
   final IServiceAuthentication<Farmaceutico> _authFarmaceutico;
 
-  ServiceFarmaceutico(this._repositoryFarmaceutico, this._authFarmaceutico) : super(_repositoryFarmaceutico, _authFarmaceutico);
+  ServiceFarmaceutico(
+    this._repositoryFarmaceutico,
+    this._authFarmaceutico,
+  ) : super(_repositoryFarmaceutico, _authFarmaceutico);
 
   @override
   Future<List<Farmaceutico>> getAll([IEntity? relatedEntity]) async {

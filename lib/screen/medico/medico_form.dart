@@ -6,7 +6,7 @@ import 'package:farmasys/screen/component/full_scroll.dart';
 import 'package:farmasys/screen/especialidade/especialidade_form.dart';
 import 'package:farmasys/screen/helper/estados.dart';
 import 'package:farmasys/screen/mask/interface/i_mask_telefone.dart';
-import 'package:farmasys/service/interface/i_service_lista_especialidade.dart';
+import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:farmasys/service/interface/i_service_medico.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,12 @@ class MedicoForm extends StatefulWidget {
   final Medico medico;
   final List<Especialidade> especialidades;
 
-  const MedicoForm({Key? key, required this.medico, required this.title, required this.especialidades}) : super(key: key);
+  const MedicoForm({
+    Key? key,
+    required this.medico,
+    required this.title,
+    required this.especialidades,
+  }) : super(key: key);
 
   @override
   State<MedicoForm> createState() => _MedicoFormState();

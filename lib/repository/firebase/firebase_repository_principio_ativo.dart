@@ -11,6 +11,19 @@ class FirebaseRepositoryPrincipioAtivo extends FirebaseRepositoryBase<PrincipioA
   FirebaseRepositoryPrincipioAtivo(this._mapper) : super('principiosAtivos', _mapper);
 
   @override
+  Future<PrincipioAtivo?> getByNome(String nome) async {
+    final query = await firestore.collection(tableName).where('nome', isEqualTo: nome).get();
+    if (query.docs.isEmpty) {
+      return null;
+    }
+    final map = query.docs.first.data();
+    map.addAll({
+      'id': query.docs.first.id,
+    });
+    return mapper.fromMap(map);
+  }
+
+  @override
   Future<PrincipioAtivo?> getByListaControle(ListaControle listaControle) async {
     final query = await firestore.collection(tableName).where('listaControleId', isEqualTo: listaControle.id).get();
     if (query.docs.isEmpty) {

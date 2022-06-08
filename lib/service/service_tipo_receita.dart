@@ -13,7 +13,10 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
 
   final IRepositoryListaControle _repositoryListaControle;
 
-  ServiceTipoReceita(this._repositoryTipoReceita, this._repositoryListaControle) : super(_repositoryTipoReceita);
+  ServiceTipoReceita(
+    this._repositoryTipoReceita,
+    this._repositoryListaControle,
+  ) : super(_repositoryTipoReceita);
 
   @override
   Future<List<TipoReceita>> getAll([IEntity? relatedEntity]) async {
@@ -42,6 +45,31 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
     else {
       await super.remove(tipoReceita);
     }
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<TipoReceita> save(TipoReceita tipoReceita, [IEntity? relatedEntity]) async {
+    final nome = tipoReceita.nome;
+    if (nome == '') {
+      throw ExceptionMessage(
+        code: 'nome-vazio',
+        message: 'O nome do tipo de receita não pode ser vazio.',
+      );
+    }
+    if (tipoReceita.id == null) {
+      if (await _repositoryTipoReceita.getByNome(nome) == null) {
+        return super.save(tipoReceita);
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'existe',
+          message: 'O tipo de receita já existe.',
+        );
+      }
+    }
+    return super.save(tipoReceita);
   }
 
   @override

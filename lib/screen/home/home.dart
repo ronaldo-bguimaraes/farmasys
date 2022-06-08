@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 class Home extends StatefulWidget {
   final Farmaceutico farmaceutico;
 
-  const Home({Key? key, required this.farmaceutico}) : super(key: key);
+  const Home({
+    Key? key,
+    required this.farmaceutico,
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();

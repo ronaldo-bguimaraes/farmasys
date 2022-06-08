@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 class TipoReceitaForm extends StatefulWidget {
   final TipoReceita tipoReceita;
 
-  const TipoReceitaForm({Key? key, required this.tipoReceita}) : super(key: key);
+  const TipoReceitaForm({
+    Key? key,
+    required this.tipoReceita,
+  }) : super(key: key);
 
   @override
   State<TipoReceitaForm> createState() => _TipoReceitaFormState();

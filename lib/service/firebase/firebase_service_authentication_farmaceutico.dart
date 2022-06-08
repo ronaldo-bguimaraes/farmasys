@@ -5,7 +5,7 @@ import 'package:farmasys/service/interface/i_service_authentication_farmaceutico
 
 class ServiceFirebaseAuthenticationFarmaceutico extends ServiceFirebaseAuthenticationBase<Farmaceutico> implements IServiceAuthenticationFarmaceutico {
   // ignore: unused_field
-  final IRepositoryFarmaceutico _repositotyUsuario;
+  final IRepositoryFarmaceutico _repositotyFarmaceutico;
 
-  ServiceFirebaseAuthenticationFarmaceutico(this._repositotyUsuario) : super(_repositotyUsuario);
+  ServiceFirebaseAuthenticationFarmaceutico(this._repositotyFarmaceutico) : super(_repositotyFarmaceutico);
 }

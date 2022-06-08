@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 class TipoNotificacaoForm extends StatefulWidget {
   final TipoNotificacao tipoNotificacao;
 
-  const TipoNotificacaoForm({Key? key, required this.tipoNotificacao}) : super(key: key);
+  const TipoNotificacaoForm({
+    Key? key,
+    required this.tipoNotificacao,
+  }) : super(key: key);
 
   @override
   State<TipoNotificacaoForm> createState() => _TipoNotificacaoFormState();

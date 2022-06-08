@@ -38,8 +38,11 @@ import 'package:provider/provider.dart';
 // provê todos os mapeadores necessários
 class ProviderMappers extends StatelessWidget {
   final Widget child;
-  
-  const ProviderMappers({Key? key, required this.child}) : super(key: key);
+
+  const ProviderMappers({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

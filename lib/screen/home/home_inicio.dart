@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 class HomeInicio extends StatefulWidget {
   final Farmaceutico farmaceutico;
 
-  const HomeInicio({Key? key, required this.farmaceutico}) : super(key: key);
+  const HomeInicio({
+    Key? key,
+    required this.farmaceutico,
+  }) : super(key: key);
 
   @override
   State<HomeInicio> createState() => _HomeInicioState();

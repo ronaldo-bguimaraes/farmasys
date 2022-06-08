@@ -8,4 +8,17 @@ class FirebaseRepositoryTipoNotificacao extends FirebaseRepositoryBase<TipoNotif
   final IMapperTipoNotificacao _mapper;
 
   FirebaseRepositoryTipoNotificacao(this._mapper) : super('tiposNotificacao', _mapper);
+
+    @override
+  Future<TipoNotificacao?> getByNome(String nome) async {
+    final query = await firestore.collection(tableName).where('nome', isEqualTo: nome).get();
+    if (query.docs.isEmpty) {
+      return null;
+    }
+    final map = query.docs.first.data();
+    map.addAll({
+      'id': query.docs.first.id,
+    });
+    return mapper.fromMap(map);
+  }
 }

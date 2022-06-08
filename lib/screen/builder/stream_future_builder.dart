@@ -4,7 +4,11 @@ class StreamFutureBuilder<T> extends StatelessWidget {
   final Stream<Future<T>> stream;
   final AsyncWidgetBuilder<T> builder;
 
-  const StreamFutureBuilder({Key? key, required this.stream, required this.builder}) : super(key: key);
+  const StreamFutureBuilder({
+    Key? key,
+    required this.stream,
+    required this.builder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

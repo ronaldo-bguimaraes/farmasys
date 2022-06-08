@@ -13,7 +13,10 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
 
   final IRepositoryPrincipioAtivo _repositoryPrincipioAtivo;
 
-  ServiceMedicamento(this._repositoryMedicamento, this._repositoryPrincipioAtivo) : super(_repositoryMedicamento);
+  ServiceMedicamento(
+    this._repositoryMedicamento,
+    this._repositoryPrincipioAtivo,
+  ) : super(_repositoryMedicamento);
 
   @override
   Future<List<Medicamento>> getAll([IEntity? relatedEntity]) async {
@@ -36,7 +39,7 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
     return medicamento;
   }
 
-    @override
+  @override
   Future<Medicamento?> getByPrincipioAtivo(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) async {
     final medicamento = await _repositoryMedicamento.getByPrincipioAtivo(principioAtivo);
     if (medicamento != null) {

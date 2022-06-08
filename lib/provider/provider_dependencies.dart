@@ -8,7 +8,10 @@ import 'package:flutter/material.dart';
 class ProviderDependencies extends StatelessWidget {
   final Widget child;
 
-  const ProviderDependencies({Key? key, required this.child}) : super(key: key);
+  const ProviderDependencies({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

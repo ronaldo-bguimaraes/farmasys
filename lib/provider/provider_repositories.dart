@@ -46,8 +46,11 @@ import 'package:provider/provider.dart';
 // provê todos os repositorios necessários
 class ProviderRepositories extends StatelessWidget {
   final Widget child;
-  
-  const ProviderRepositories({Key? key, required this.child}) : super(key: key);
+
+  const ProviderRepositories({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

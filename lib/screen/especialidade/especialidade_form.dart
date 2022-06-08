@@ -1,13 +1,16 @@
 import 'package:farmasys/dto/especialidade.dart';
 import 'package:farmasys/exception/exception_message.dart';
-import 'package:farmasys/service/interface/i_service_lista_especialidade.dart';
+import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EspecialidadeForm extends StatefulWidget {
   final Especialidade especialidade;
 
-  const EspecialidadeForm({Key? key, required this.especialidade}) : super(key: key);
+  const EspecialidadeForm({
+    Key? key,
+    required this.especialidade,
+  }) : super(key: key);
 
   @override
   State<EspecialidadeForm> createState() => _EspecialidadeFormState();

@@ -11,7 +11,10 @@ class ServiceMedico extends ServiceEntityBase<Medico> implements IServiceMedico 
 
   final IRepositoryEspecialidade _repositoryEspecialidade;
 
-  ServiceMedico(this._repositoryMedico, this._repositoryEspecialidade) : super(_repositoryMedico);
+  ServiceMedico(
+    this._repositoryMedico,
+    this._repositoryEspecialidade,
+  ) : super(_repositoryMedico);
 
   @override
   Future<List<Medico>> getAll([IEntity? relatedEntity]) async {

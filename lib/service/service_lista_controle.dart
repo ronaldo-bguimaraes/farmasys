@@ -20,7 +20,12 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
 
   final IRepositoryPrincipioAtivo _repositoryPrincipioAtivo;
 
-  ServiceListaControle(this._repositoryListaControle, this._repositoryTipoReceita, this._repositoryTipoNotificacao, this._repositoryPrincipioAtivo) : super(_repositoryListaControle);
+  ServiceListaControle(
+    this._repositoryListaControle,
+    this._repositoryTipoReceita,
+    this._repositoryTipoNotificacao,
+    this._repositoryPrincipioAtivo,
+  ) : super(_repositoryListaControle);
 
   @override
   Future<List<ListaControle>> getAll([IEntity? relatedEntity]) async {
@@ -87,6 +92,31 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
     else {
       await super.remove(listaControle);
     }
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<ListaControle> save(ListaControle listaControle, [IEntity? relatedEntity]) async {
+    final nome = listaControle.nome;
+    if (nome == '') {
+      throw ExceptionMessage(
+        code: 'nome-vazio',
+        message: 'O nome da lista de controle não pode ser vazio.',
+      );
+    }
+    if (listaControle.id == null) {
+      if (await _repositoryListaControle.getByNome(nome) == null) {
+        return super.save(listaControle);
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'existe',
+          message: 'A lista de controle já existe.',
+        );
+      }
+    }
+    return super.save(listaControle);
   }
 
   @override

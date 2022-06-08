@@ -13,7 +13,11 @@ class ClienteForm extends StatefulWidget {
   final String title;
   final Cliente cliente;
 
-  const ClienteForm({Key? key, required this.cliente, required this.title}) : super(key: key);
+  const ClienteForm({
+    Key? key,
+    required this.cliente,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<ClienteForm> createState() => _ClienteFormState();

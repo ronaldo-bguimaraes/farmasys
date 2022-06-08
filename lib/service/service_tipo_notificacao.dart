@@ -13,7 +13,10 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
 
   final IRepositoryListaControle _repositoryListaControle;
 
-  ServiceTipoNotificacao(this._repositoryTipoNotificacao, this._repositoryListaControle) : super(_repositoryTipoNotificacao);
+  ServiceTipoNotificacao(
+    this._repositoryTipoNotificacao,
+    this._repositoryListaControle,
+  ) : super(_repositoryTipoNotificacao);
 
   @override
   Future<List<TipoNotificacao>> getAll([IEntity? relatedEntity]) async {
@@ -42,6 +45,31 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
     else {
       await super.remove(tipoNotificacao);
     }
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<TipoNotificacao> save(TipoNotificacao tipoNotificacao, [IEntity? relatedEntity]) async {
+    final nome = tipoNotificacao.nome;
+    if (nome == '') {
+      throw ExceptionMessage(
+        code: 'nome-vazio',
+        message: 'O nome do tipo de notificação não pode ser vazio.',
+      );
+    }
+    if (tipoNotificacao.id == null) {
+      if (await _repositoryTipoNotificacao.getByNome(nome) == null) {
+        return super.save(tipoNotificacao);
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'existe',
+          message: 'O tipo de notificação já existe.',
+        );
+      }
+    }
+    return super.save(tipoNotificacao);
   }
 
   @override
