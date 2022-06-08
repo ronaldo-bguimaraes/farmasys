@@ -17,8 +17,8 @@ abstract class ServiceUsuario<T extends IUsuario> extends ServiceEntityBase<T> i
   ) : super(_repositoryUsuario);
 
   @override
-  Future<T?> getCurrentUser() async {
-    return await _authUsuario.getCurrentUser();
+  T? get currentUser {
+    return _authUsuario.currentUser;
   }
 
   @override

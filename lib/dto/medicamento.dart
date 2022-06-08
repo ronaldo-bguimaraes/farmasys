@@ -9,7 +9,7 @@ class Medicamento implements IEntity {
   double preco;
   int quantidade;
   String? principioAtivoId;
-  PrincipioAtivo? principioAtivo;
+  PrincipioAtivo principioAtivo;
   int comprimidos;
 
   Medicamento({
@@ -19,7 +19,7 @@ class Medicamento implements IEntity {
     this.preco = 0,
     this.quantidade = 0,
     this.principioAtivoId,
-    this.principioAtivo,
+    PrincipioAtivo? principioAtivo,
     this.comprimidos = 0,
-  });
+  }) : principioAtivo = principioAtivo ?? PrincipioAtivo();
 }

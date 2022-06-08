@@ -12,6 +12,9 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
   ServiceFirebaseAuthenticationBase(this._repositoryUsuario);
 
   @override
+  T? currentUser;
+
+  @override
   Future<T> createUserWithEmailAndPassword(T usuario) async {
     if (usuario.senha == '') {
       throw ExceptionMessage(
@@ -25,17 +28,12 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
         password: usuario.senha,
       );
       usuario.id = userCredential.user?.uid;
-      return await _repositoryUsuario.set(usuario);
+      return currentUser = await _repositoryUsuario.set(usuario);
     }
     //
     on FirebaseAuthException catch (error) {
       throw FirebaseAuthErrorMap.getExceptionMessage(error);
     }
-  }
-
-  @override
-  Future<T?> getCurrentUser() async {
-    return await _repositoryUsuario.getById(auth.currentUser!.uid);
   }
 
   @override
@@ -54,9 +52,9 @@ abstract class ServiceFirebaseAuthenticationBase<T extends IUsuario> implements 
       final user = userCredential.user;
       if (user != null) {
         // get firestore user data
-        final usuario = await _repositoryUsuario.getById(user.uid);
-        if (usuario != null) {
-          return usuario;
+        currentUser = await _repositoryUsuario.getById(user.uid);
+        if (currentUser != null) {
+          return Future.value(currentUser);
         }
         //
         else {

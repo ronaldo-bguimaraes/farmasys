@@ -3,9 +3,10 @@ import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/medicamento.dart';
 import 'package:farmasys/dto/principio_ativo.dart';
 import 'package:farmasys/exception/exception_message.dart';
-import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
 import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart';
+import 'package:farmasys/service/interface/i_service_lista_controle.dart';
+import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_principio_ativo.dart';
 import 'package:farmasys/service/service_entity_base.dart';
 
@@ -13,7 +14,7 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
   // ignore: unused_field
   final IRepositoryPrincipioAtivo _repositoryPrincipioAtivo;
 
-  final IRepositoryListaControle _repositoryListaControle;
+  final IServiceListaControle _repositoryListaControle;
 
   final IRepositoryMedicamento _repositoryMedicamento;
 

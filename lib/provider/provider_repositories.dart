@@ -15,12 +15,10 @@ import 'package:farmasys/mapper/interface/i_mapper_venda.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_cliente.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_especialidade.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_farmaceutico.dart';
-import 'package:farmasys/repository/firebase/firebase_repository_item_receita.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_item_venda.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_lista_controle.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_medicamento.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_medico.dart';
-import 'package:farmasys/repository/firebase/firebase_repository_notificacao.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_principio_ativo.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_receita.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_tipo_notificacao.dart';
@@ -29,12 +27,10 @@ import 'package:farmasys/repository/firebase/firebase_repository_venda.dart';
 import 'package:farmasys/repository/interface/i_repository_cliente.dart';
 import 'package:farmasys/repository/interface/i_repository_especialidade.dart';
 import 'package:farmasys/repository/interface/i_repository_farmaceutico.dart';
-import 'package:farmasys/repository/interface/i_repository_item_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_item_venda.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
 import 'package:farmasys/repository/interface/i_repository_medico.dart';
-import 'package:farmasys/repository/interface/i_repository_notificacao.dart';
 import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart';
 import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_tipo_notificacao.dart';
@@ -125,18 +121,6 @@ class ProviderRepositories extends StatelessWidget {
         Provider<IRepositoryItemVenda>(
           create: (ctx) => FirebaseRepositoryItemVenda(
             ctx.read<IMapperItemVenda>(),
-          ),
-          lazy: true,
-        ),
-        Provider<IRepositoryItemReceita>(
-          create: (ctx) => FirebaseRepositoryItemReceita(
-            ctx.read<IMapperItemReceita>(),
-          ),
-          lazy: true,
-        ),
-        Provider<IRepositoryNotificacao>(
-          create: (ctx) => FirebaseRepositoryNotificacao(
-            ctx.read<IMapperNotificacao>(),
           ),
           lazy: true,
         ),

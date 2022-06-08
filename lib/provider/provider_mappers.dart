@@ -87,11 +87,9 @@ class ProviderMappers extends StatelessWidget {
           lazy: true,
         ),
         Provider<IMapperNotificacao>(
-          create: (ctx) => MapperNotificacao(),
-          lazy: true,
-        ),
-        Provider<IMapperReceita>(
-          create: (ctx) => MapperReceita(),
+          create: (ctx) => MapperNotificacao(
+            ctx.read<IMapperCodigo>()
+          ),
           lazy: true,
         ),
         Provider<IMapperPrincipioAtivo>(
@@ -110,20 +108,23 @@ class ProviderMappers extends StatelessWidget {
           create: (ctx) => MapperEspecialidade(),
           lazy: true,
         ),
-        Provider<IMapperReceita>(
-          create: (ctx) => MapperReceita(),
-          lazy: true,
-        ),
-        Provider<IMapperVenda>(
-          create: (ctx) => MapperVenda(),
-          lazy: true,
-        ),
         Provider<IMapperItemReceita>(
           create: (ctx) => MapperItemReceita(),
           lazy: true,
         ),
         Provider<IMapperItemVenda>(
           create: (ctx) => MapperItemVenda(),
+          lazy: true,
+        ),
+        Provider<IMapperReceita>(
+          create: (ctx) => MapperReceita(
+            ctx.read<IMapperItemReceita>(),
+            ctx.read<IMapperNotificacao>(),
+          ),
+          lazy: true,
+        ),
+        Provider<IMapperVenda>(
+          create: (ctx) => MapperVenda(),
           lazy: true,
         ),
       ],

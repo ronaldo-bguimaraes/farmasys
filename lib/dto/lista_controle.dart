@@ -9,7 +9,7 @@ class ListaControle implements IEntity {
   int duracaoTratamento;
   int prazo;
   String? tipoReceitaId;
-  TipoReceita? tipoReceita;
+  TipoReceita tipoReceita;
   String? tipoNotificacaoId;
   TipoNotificacao? tipoNotificacao;
 
@@ -19,8 +19,8 @@ class ListaControle implements IEntity {
     this.duracaoTratamento = 0,
     this.prazo = 0,
     this.tipoReceitaId,
-    this.tipoReceita,
+    TipoReceita? tipoReceita,
     this.tipoNotificacaoId,
     this.tipoNotificacao,
-  });
+  }) : tipoReceita = tipoReceita ?? TipoReceita();
 }

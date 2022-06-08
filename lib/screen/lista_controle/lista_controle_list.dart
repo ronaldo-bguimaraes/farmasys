@@ -38,7 +38,7 @@ class _ListaControleListState extends State<ListaControleList> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Tipo de receita: ${tipoReceita?.nome}',
+                    'Tipo de receita: ${tipoReceita.nome}',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 10),

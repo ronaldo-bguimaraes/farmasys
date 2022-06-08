@@ -1,18 +1,16 @@
 import 'package:farmasys/dto/codigo.dart';
-import 'package:farmasys/dto/inteface/i_entity.dart';
+import 'package:farmasys/dto/inteface/i_dto.dart';
 import 'package:farmasys/dto/tipo_notificacao.dart';
 
-class Notificacao implements IEntity {
-  @override
-  String? id;
+class Notificacao implements IDto {
   Codigo codigo;
   String? tipoNotificacaoId;
-  TipoNotificacao? tipoNotificacao;
+  TipoNotificacao tipoNotificacao;
 
   Notificacao({
-    this.id,
     codigo,
     this.tipoNotificacaoId,
-    this.tipoNotificacao,
-  }) : codigo = codigo ?? Codigo();
+    TipoNotificacao? tipoNotificacao,
+  })  : codigo = codigo ?? Codigo(),
+        tipoNotificacao = tipoNotificacao ?? TipoNotificacao();
 }

@@ -159,8 +159,10 @@ class _PrincipioAtivoFormState extends State<PrincipioAtivoForm> {
                           onPressed: () async {
                             final listaControle = await ListaControleForm.show(ctx);
                             if (listaControle != null) {
-                              widget.listasControle.add(listaControle);
-                              widget.listasControle.sort((a, b) => a.nome.compareTo(b.nome));
+                              setState(() {
+                                widget.listasControle.add(listaControle);
+                                widget.listasControle.sort((a, b) => a.nome.compareTo(b.nome));
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(

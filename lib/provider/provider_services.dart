@@ -1,7 +1,6 @@
 import 'package:farmasys/repository/interface/i_repository_cliente.dart';
 import 'package:farmasys/repository/interface/i_repository_especialidade.dart';
 import 'package:farmasys/repository/interface/i_repository_farmaceutico.dart';
-import 'package:farmasys/repository/interface/i_repository_item_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
 import 'package:farmasys/repository/interface/i_repository_medico.dart';
@@ -14,7 +13,6 @@ import 'package:farmasys/service/firebase/firebase_service_authentication_farmac
 import 'package:farmasys/service/interface/i_service_authentication_farmaceutico.dart';
 import 'package:farmasys/service/interface/i_service_cliente.dart';
 import 'package:farmasys/service/interface/i_service_farmaceutico.dart';
-import 'package:farmasys/service/interface/i_service_item_receita.dart';
 import 'package:farmasys/service/interface/i_service_especialidade.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_medico.dart';
@@ -27,7 +25,6 @@ import 'package:farmasys/service/interface/i_service_venda.dart';
 import 'package:farmasys/service/service_cliente.dart';
 import 'package:farmasys/service/service_especialidade.dart';
 import 'package:farmasys/service/service_farmaceutico.dart';
-import 'package:farmasys/service/service_item_receita.dart';
 import 'package:farmasys/service/service_lista_controle.dart';
 import 'package:farmasys/service/service_medicamento.dart';
 import 'package:farmasys/service/service_medico.dart';
@@ -72,10 +69,19 @@ class ProviderServices extends StatelessWidget {
           ),
           lazy: true,
         ),
+        Provider<IServiceListaControle>(
+          create: (ctx) => ServiceListaControle(
+            ctx.read<IRepositoryListaControle>(),
+            ctx.read<IRepositoryTipoReceita>(),
+            ctx.read<IRepositoryTipoNotificacao>(),
+            ctx.read<IRepositoryPrincipioAtivo>(),
+          ),
+          lazy: true,
+        ),
         Provider<IServicePrincipioAtivo>(
           create: (ctx) => ServicePrincipioAtivo(
             ctx.read<IRepositoryPrincipioAtivo>(),
-            ctx.read<IRepositoryListaControle>(),
+            ctx.read<IServiceListaControle>(),
             ctx.read<IRepositoryMedicamento>(),
           ),
           lazy: true,
@@ -83,7 +89,7 @@ class ProviderServices extends StatelessWidget {
         Provider<IServiceMedicamento>(
           create: (ctx) => ServiceMedicamento(
             ctx.read<IRepositoryMedicamento>(),
-            ctx.read<IRepositoryPrincipioAtivo>(),
+            ctx.read<IServicePrincipioAtivo>(),
           ),
           lazy: true,
         ),
@@ -107,15 +113,6 @@ class ProviderServices extends StatelessWidget {
           ),
           lazy: true,
         ),
-        Provider<IServiceListaControle>(
-          create: (ctx) => ServiceListaControle(
-            ctx.read<IRepositoryListaControle>(),
-            ctx.read<IRepositoryTipoReceita>(),
-            ctx.read<IRepositoryTipoNotificacao>(),
-            ctx.read<IRepositoryPrincipioAtivo>(),
-          ),
-          lazy: true,
-        ),
         Provider<IServiceEspecialidade>(
           create: (ctx) => ServiceEspecialidade(
             ctx.read<IRepositoryEspecialidade>(),
@@ -123,17 +120,9 @@ class ProviderServices extends StatelessWidget {
           ),
           lazy: true,
         ),
-        Provider<IServiceItemReceita>(
-          create: (ctx) => ServiceItemReceita(
-            ctx.read<IRepositoryItemReceita>(),
-            ctx.read<IRepositoryMedicamento>(),
-          ),
-          lazy: true,
-        ),
         Provider<IServiceReceita>(
           create: (ctx) => ServiceReceita(
             ctx.read<IRepositoryReceita>(),
-            ctx.read<IServiceItemReceita>(),
           ),
           lazy: true,
         ),

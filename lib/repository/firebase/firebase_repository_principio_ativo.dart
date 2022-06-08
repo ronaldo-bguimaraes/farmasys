@@ -6,9 +6,9 @@ import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart'
 
 class FirebaseRepositoryPrincipioAtivo extends FirebaseRepositoryBase<PrincipioAtivo> implements IRepositoryPrincipioAtivo {
   // ignore: unused_field
-  final IMapperPrincipioAtivo _mapper;
+  final IMapperPrincipioAtivo _mapperPrincipioAtivo;
 
-  FirebaseRepositoryPrincipioAtivo(this._mapper) : super('principiosAtivos', _mapper);
+  FirebaseRepositoryPrincipioAtivo(this._mapperPrincipioAtivo) : super('principiosAtivos', _mapperPrincipioAtivo);
 
   @override
   Future<PrincipioAtivo?> getByNome(String nome) async {
@@ -33,6 +33,6 @@ class FirebaseRepositoryPrincipioAtivo extends FirebaseRepositoryBase<PrincipioA
     map.addAll({
       'id': query.docs.first.id,
     });
-    return _mapper.fromMap(map);
+    return _mapperPrincipioAtivo.fromMap(map);
   }
 }

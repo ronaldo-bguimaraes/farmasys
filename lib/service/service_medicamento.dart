@@ -2,16 +2,17 @@ import 'dart:async';
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/medicamento.dart';
 import 'package:farmasys/dto/principio_ativo.dart';
+import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
-import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
+import 'package:farmasys/service/interface/i_service_principio_ativo.dart';
 import 'package:farmasys/service/service_entity_base.dart';
 
 class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServiceMedicamento {
   // ignore: unused_field
   final IRepositoryMedicamento _repositoryMedicamento;
 
-  final IRepositoryPrincipioAtivo _repositoryPrincipioAtivo;
+  final IServicePrincipioAtivo _repositoryPrincipioAtivo;
 
   ServiceMedicamento(
     this._repositoryMedicamento,
@@ -24,7 +25,17 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
     medicamentos.sort((a, b) => a.nome.compareTo(b.nome));
     return await Future.wait(
       medicamentos.map((medicamento) async {
-        medicamento.principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId!);
+        final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+        if (principioAtivo != null) {
+          medicamento.principioAtivo = principioAtivo;
+        }
+        //
+        else {
+          throw ExceptionMessage(
+            code: 'error-get-data',
+            message: 'Erro ao buscar princípio ativo.',
+          );
+        }
         return medicamento;
       }),
     );
@@ -34,7 +45,17 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
   Future<Medicamento?> getById(String? id, [IEntity? relatedEntity]) async {
     final medicamento = await super.getById(id);
     if (medicamento != null) {
-      medicamento.principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId!);
+      final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+      if (principioAtivo != null) {
+        medicamento.principioAtivo = principioAtivo;
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'error-get-data',
+          message: 'Erro ao buscar princípio ativo.',
+        );
+      }
     }
     return medicamento;
   }
@@ -44,7 +65,17 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
     final medicamento = await _repositoryMedicamento.getByPrincipioAtivo(principioAtivo);
     if (medicamento != null) {
       if (medicamento.principioAtivoId != null) {
-        medicamento.principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+        final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+        if (principioAtivo != null) {
+          medicamento.principioAtivo = principioAtivo;
+        }
+        //
+        else {
+          throw ExceptionMessage(
+            code: 'error-get-data',
+            message: 'Erro ao buscar princípio ativo.',
+          );
+        }
       }
     }
     return medicamento;
@@ -65,7 +96,17 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
       medicamentos.sort((a, b) => a.nome.compareTo(b.nome));
       return await Future.wait(
         medicamentos.map((medicamento) async {
-          medicamento.principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId!);
+          final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+          if (principioAtivo != null) {
+            medicamento.principioAtivo = principioAtivo;
+          }
+          //
+          else {
+            throw ExceptionMessage(
+              code: 'error-get-data',
+              message: 'Erro ao buscar princípio ativo.',
+            );
+          }
           return medicamento;
         }),
       );

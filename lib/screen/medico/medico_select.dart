@@ -1,24 +1,34 @@
 import 'package:farmasys/dto/medico.dart';
 import 'package:farmasys/screen/component/entity_listview.dart';
-import 'package:farmasys/screen/medico/medico_form.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
 import 'package:farmasys/service/interface/i_service_medico.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MedicoList extends StatefulWidget {
-  static const String routeName = '/medico-list';
-
-  const MedicoList({Key? key}) : super(key: key);
+class MedicoSelect extends StatefulWidget {
+  const MedicoSelect({Key? key}) : super(key: key);
 
   @override
-  State<MedicoList> createState() => _MedicoListState();
+  State<MedicoSelect> createState() => _MedicoSelectState();
+
+  static Future<Medico?> show(BuildContext ctx) async {
+    return await Navigator.of(ctx).push<Medico?>(
+      MaterialPageRoute(
+        builder: (ctx) {
+          return const MedicoSelect();
+        },
+      ),
+    );
+  }
 }
 
-class _MedicoListState extends State<MedicoList> {
+class _MedicoSelectState extends State<MedicoSelect> {
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Selecione o médico'),
+      ),
       body: StreamSnapshotBuilder<List<Medico>>(
         stream: ctx.read<IServiceMedico>().streamAll(),
         showChild: (medicos) {
@@ -42,16 +52,12 @@ class _MedicoListState extends State<MedicoList> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
               );
             },
-            editShow: MedicoForm.show,
+            editShow: (ctx, medico) {
+              Navigator.of(ctx).pop(medico);
+            },
             removeAction: ctx.read<IServiceMedico>().remove,
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          MedicoForm.show(ctx);
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

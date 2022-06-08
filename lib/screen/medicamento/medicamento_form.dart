@@ -23,9 +23,9 @@ class MedicamentoForm extends StatefulWidget {
   @override
   State<MedicamentoForm> createState() => _MedicamentoFormState();
 
-  static Future<PrincipioAtivo?> show(BuildContext ctx, [Medicamento? medicamento]) async {
+  static Future<Medicamento?> show(BuildContext ctx, [Medicamento? medicamento]) async {
     final principiosAtivos = await ctx.read<IServicePrincipioAtivo>().getAll();
-    return Navigator.of(ctx).push<PrincipioAtivo?>(
+    return Navigator.of(ctx).push<Medicamento?>(
       MaterialPageRoute(
         builder: (ctx) {
           return MedicamentoForm(
@@ -132,8 +132,10 @@ class _MedicamentoFormState extends State<MedicamentoForm> {
                           onPressed: () async {
                             final principioAtivo = await PrincipioAtivoForm.show(ctx);
                             if (principioAtivo != null) {
-                              widget.principiosAtivos.add(principioAtivo);
-                              widget.principiosAtivos.sort((a, b) => a.nome.compareTo(b.nome));
+                              setState(() {
+                                widget.principiosAtivos.add(principioAtivo);
+                                widget.principiosAtivos.sort((a, b) => a.nome.compareTo(b.nome));
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(

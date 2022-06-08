@@ -52,13 +52,11 @@ class MedicoForm extends StatefulWidget {
 class _MedicoFormState extends State<MedicoForm> {
   final _formKey = GlobalKey<FormState>();
   late Medico _medico;
-  final _codigoController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _medico = widget.medico;
-    _codigoController.text = _medico.crm.codigo;
   }
 
   @override
@@ -136,8 +134,10 @@ class _MedicoFormState extends State<MedicoForm> {
                           onPressed: () async {
                             final especialidade = await EspecialidadeForm.show(ctx);
                             if (especialidade != null) {
-                              widget.especialidades.add(especialidade);
-                              widget.especialidades.sort((a, b) => a.nome.compareTo(b.nome));
+                              setState(() {
+                                widget.especialidades.add(especialidade);
+                                widget.especialidades.sort((a, b) => a.nome.compareTo(b.nome));
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -209,7 +209,7 @@ class _MedicoFormState extends State<MedicoForm> {
                       height: 15,
                     ),
                     TextFormField(
-                      controller: _codigoController,
+                      initialValue: _medico.crm.codigo,
                       onChanged: (value) {
                         setState(() {
                           _medico.crm.codigo = value;
@@ -222,10 +222,10 @@ class _MedicoFormState extends State<MedicoForm> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'O Código do CRM não pode ser vazio';
+                          return 'O código do CRM não pode ser vazio';
                         }
                         if (value.length < 4) {
-                          return 'O Código do CRM precisa ter no mínimo 4 digitos';
+                          return 'O código do CRM precisa ter no mínimo 4 digitos';
                         }
                         return null;
                       },

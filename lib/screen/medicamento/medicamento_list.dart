@@ -35,7 +35,7 @@ class _MedicamentoListState extends State<MedicamentoList> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Princípio ativo: ${medicamento.principioAtivo?.nome}',
+                  'Princípio ativo: ${medicamento.principioAtivo.nome}',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 10),

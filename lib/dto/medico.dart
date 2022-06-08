@@ -9,7 +9,7 @@ class Medico implements IEntity {
   String telefone;
   CRM crm;
   String? especialidadeId;
-  Especialidade? especialidade;
+  Especialidade especialidade;
 
   Medico({
     this.id,
@@ -17,6 +17,7 @@ class Medico implements IEntity {
     this.telefone = '',
     CRM? crm,
     this.especialidadeId,
-    this.especialidade,
-  }) : crm = crm ?? CRM();
+    Especialidade? especialidade,
+  })  : crm = crm ?? CRM(),
+        especialidade = especialidade ?? Especialidade();
 }

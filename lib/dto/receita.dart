@@ -8,23 +8,28 @@ class Receita implements IEntity {
   @override
   String? id;
   String? medicoId;
-  Medico? medico;
+  Medico medico;
   String? tipoReceitaId;
-  TipoReceita? tipoReceita;
+  TipoReceita tipoReceita;
   String? notificacaoId;
   Notificacao? notificacao;
-  List<ItemReceita>? itens;
   DateTime? dataEmissao;
+  DateTime? dataDispensacao;
+  ItemReceita item;
+  int frequencia;
 
   Receita({
     this.id,
     this.medicoId,
-    this.medico,
+    Medico? medico,
     this.tipoReceitaId,
-    this.tipoReceita,
+    TipoReceita? tipoReceita,
     this.notificacaoId,
     this.notificacao,
-    List<ItemReceita>? itens,
+    ItemReceita? item,
     this.dataEmissao,
-  }) : itens = itens ?? [];
+    this.frequencia = 0,
+  })  : medico = medico ?? Medico(),
+        tipoReceita = tipoReceita ?? TipoReceita(),
+        item = item ?? ItemReceita();
 }

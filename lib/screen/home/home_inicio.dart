@@ -1,44 +1,32 @@
-import 'package:farmasys/dto/farmaceutico.dart';
-import 'package:farmasys/screen/receita.dart';
+import 'package:farmasys/screen/receita/receita_list.dart';
+import 'package:farmasys/service/interface/i_service_authentication_farmaceutico.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeInicio extends StatefulWidget {
-  final Farmaceutico farmaceutico;
-
-  const HomeInicio({
-    Key? key,
-    required this.farmaceutico,
-  }) : super(key: key);
+  const HomeInicio({Key? key}) : super(key: key);
 
   @override
   State<HomeInicio> createState() => _HomeInicioState();
 }
 
 class _HomeInicioState extends State<HomeInicio> {
-  final List<String> _categorias = ['Receitas', 'Vendas'];
+  final List<String> _categorias = ['Receitas'];
 
   @override
   Widget build(BuildContext ctx) {
     return DefaultTabController(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.farmaceutico.nome),
+          title: Text(ctx.read<IServiceAuthenticationFarmaceutico>().currentUser?.nome ?? ''),
           bottom: TabBar(
             tabs: _categorias.map((e) => Tab(text: e)).toList(),
             isScrollable: true,
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  ReceitaAdd.show(ctx);
-                },
-                child: const Text('Validar Receita'),
-              ),
-            ),
-            Container(),
+            ReceitaList(),
           ],
         ),
       ),

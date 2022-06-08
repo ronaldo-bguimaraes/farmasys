@@ -182,7 +182,7 @@ class _ListaControleFormState extends State<ListaControleForm> {
                             value: _listaControle.tipoNotificacaoId,
                             decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              labelText: 'Lista de tipos de notificação',
+                              labelText: 'Tipo de notificação',
                               enabled: _possuiNotificacao,
                             ),
                             items: _tiposNotificacao.map((e) {
@@ -230,8 +230,10 @@ class _ListaControleFormState extends State<ListaControleForm> {
                           onPressed: () async {
                             final tipoNotificacao = await TipoNotificacaoForm.show(ctx);
                             if (tipoNotificacao != null) {
-                              widget.tiposNotificacao.add(tipoNotificacao);
-                              widget.tiposNotificacao.sort((a, b) => a.nome.compareTo(b.nome));
+                              setState(() {
+                                widget.tiposNotificacao.add(tipoNotificacao);
+                                widget.tiposNotificacao.sort((a, b) => a.nome.compareTo(b.nome));
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -264,6 +266,7 @@ class _ListaControleFormState extends State<ListaControleForm> {
                             }).toList(),
                             onChanged: (value) {
                               setState(() {
+                                _listaControle.tipoReceita = widget.tiposReceita.firstWhere((e) => e.id == value);
                                 _listaControle.tipoReceitaId = value;
                               });
                             },
@@ -283,8 +286,10 @@ class _ListaControleFormState extends State<ListaControleForm> {
                           onPressed: () async {
                             final tipoReceita = await TipoReceitaForm.show(ctx);
                             if (tipoReceita != null) {
-                              widget.tiposReceita.add(tipoReceita);
-                              widget.tiposReceita.sort((a, b) => a.nome.compareTo(b.nome));
+                              setState(() {
+                                widget.tiposReceita.add(tipoReceita);
+                                widget.tiposReceita.sort((a, b) => a.nome.compareTo(b.nome));
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(
