@@ -20,6 +20,7 @@ class MapperReceita implements IMapperReceita {
       'tipoReceitaId': receita.tipoReceitaId,
       'notificacao': notificacao != null ? _mapperNotificacao.toMap(notificacao) : null,
       'dataEmissao': receita.dataEmissao?.toIso8601String(),
+      'dataDispensacao': receita.dataDispensacao?.toIso8601String(),
       'item': _mapperItemReceita.toMap(receita.item),
       'frequencia': receita.frequencia.toInt(),
     };
@@ -36,6 +37,7 @@ class MapperReceita implements IMapperReceita {
       tipoReceitaId: map['tipoReceitaId'],
       notificacao: notificacao != null ? _mapperNotificacao.fromMap(notificacao) : null,
       dataEmissao: DateTime.parse(map['dataEmissao']),
+      dataDispensacao: DateTime.parse(map['dataDispensacao']),
       item: _mapperItemReceita.fromMap(map['item']),
       frequencia: map['frequencia'].toInt(),
     );

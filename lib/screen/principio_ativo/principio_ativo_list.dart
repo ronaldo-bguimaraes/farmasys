@@ -42,7 +42,7 @@ class _PrincipioAtivoListState extends State<PrincipioAtivoList> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Dispensação máxima: ${listaControle != null ? "suficiente para ${listaControle.duracaoTratamento} dias" : "Indefinida"}',
+                    'Dispensação máxima: ${listaControle != null ? "suficiente para ${listaControle.duracaoTratamento} dias" : "indefinida"}',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                 ],

@@ -6,7 +6,6 @@ import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
 import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart';
 import 'package:farmasys/service/interface/i_service_lista_controle.dart';
-import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_principio_ativo.dart';
 import 'package:farmasys/service/service_entity_base.dart';
 

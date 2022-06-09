@@ -123,6 +123,12 @@ class ProviderServices extends StatelessWidget {
         Provider<IServiceReceita>(
           create: (ctx) => ServiceReceita(
             ctx.read<IRepositoryReceita>(),
+            ctx.read<IRepositoryMedico>(),
+            ctx.read<IRepositoryCliente>(),
+            ctx.read<IRepositoryFarmaceutico>(),
+            ctx.read<IServiceMedicamento>(),
+            ctx.read<IServiceTipoNotificacao>(),
+            ctx.read<IServiceTipoReceita>(),
           ),
           lazy: true,
         ),

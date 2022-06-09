@@ -1,5 +1,4 @@
 import 'package:farmasys/dto/cliente.dart';
-import 'package:farmasys/dto/farmaceutico.dart';
 import 'package:farmasys/dto/medicamento.dart';
 import 'package:farmasys/dto/notificacao.dart';
 import 'package:farmasys/dto/receita.dart';

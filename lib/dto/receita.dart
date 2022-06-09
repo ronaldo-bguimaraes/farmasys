@@ -12,12 +12,11 @@ class Receita implements IEntity {
   String? medicoId;
   Medico medico;
   String? clienteId;
-  Cliente? cliente;
+  Cliente cliente;
   String? farmaceuticoId;
-  Farmaceutico? farmaceutico;
+  Farmaceutico farmaceutico;
   String? tipoReceitaId;
   TipoReceita tipoReceita;
-  String? notificacaoId;
   Notificacao? notificacao;
   DateTime? dataEmissao;
   DateTime? dataDispensacao;
@@ -34,10 +33,10 @@ class Receita implements IEntity {
     Farmaceutico? farmaceutico,
     this.tipoReceitaId,
     TipoReceita? tipoReceita,
-    this.notificacaoId,
     this.notificacao,
     ItemReceita? item,
     this.dataEmissao,
+    this.dataDispensacao,
     this.frequencia = 0,
   })  : medico = medico ?? Medico(),
         cliente = cliente ?? Cliente(),

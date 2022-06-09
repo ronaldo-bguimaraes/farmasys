@@ -1,12 +1,10 @@
 import 'package:farmasys/mapper/interface/i_mapper_cliente.dart';
 import 'package:farmasys/mapper/interface/i_mapper_especialidade.dart';
 import 'package:farmasys/mapper/interface/i_mapper_farmaceutico.dart';
-import 'package:farmasys/mapper/interface/i_mapper_item_receita.dart';
 import 'package:farmasys/mapper/interface/i_mapper_item_venda.dart';
 import 'package:farmasys/mapper/interface/i_mapper_lista_controle.dart';
 import 'package:farmasys/mapper/interface/i_mapper_medicamento.dart';
 import 'package:farmasys/mapper/interface/i_mapper_medico.dart';
-import 'package:farmasys/mapper/interface/i_mapper_notificacao.dart';
 import 'package:farmasys/mapper/interface/i_mapper_principio_ativo.dart';
 import 'package:farmasys/mapper/interface/i_mapper_receita.dart';
 import 'package:farmasys/mapper/interface/i_mapper_tipo_notificacao.dart';
