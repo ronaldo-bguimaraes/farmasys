@@ -106,7 +106,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
         );
       }
 
-      if(listaControle.tipoReceitaId == receita.tipoReceitaId) {
+      if(listaControle.tipoReceitaId != receita.tipoReceitaId) {
         throw ExceptionMessage(
           code: 'receita-inválida',
           message: 'Esse medicamento só permite a dispensação com receita do tipo ${listaControle.tipoReceita.nome}',

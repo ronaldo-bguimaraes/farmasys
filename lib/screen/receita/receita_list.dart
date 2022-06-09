@@ -27,7 +27,9 @@ class _ReceitaListState extends State<ReceitaList> {
             items: receitas,
             childBuilder: (ctx, receita) {
               return Column(
-                children: [],
+                children: [
+                  Text(receita.cliente?.nome ?? '')
+                ],
                 crossAxisAlignment: CrossAxisAlignment.stretch,
               );
             },

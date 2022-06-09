@@ -59,7 +59,9 @@ class _ClienteSelectState extends State<ClienteSelect> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
               );
             },
-            editShow: ClienteForm.show,
+            editShow: (ctx, cliente) {
+              Navigator.of(ctx).pop(cliente);
+            },
             removeAction: ctx.read<IServiceCliente>().remove,
           );
         },

@@ -15,6 +15,8 @@ class MapperReceita implements IMapperReceita {
     return {
       'id': receita.id,
       'medicoId': receita.medicoId,
+      'clienteId': receita.clienteId,
+      'farmaceuticoId': receita.farmaceuticoId,
       'tipoReceitaId': receita.tipoReceitaId,
       'notificacao': notificacao != null ? _mapperNotificacao.toMap(notificacao) : null,
       'dataEmissao': receita.dataEmissao?.toIso8601String(),
@@ -29,6 +31,8 @@ class MapperReceita implements IMapperReceita {
     return Receita(
       id: map['id'],
       medicoId: map['medicoId'],
+      clienteId: map['clienteId'],
+      farmaceuticoId: map['farmaceuticoId'],
       tipoReceitaId: map['tipoReceitaId'],
       notificacao: notificacao != null ? _mapperNotificacao.fromMap(notificacao) : null,
       dataEmissao: DateTime.parse(map['dataEmissao']),

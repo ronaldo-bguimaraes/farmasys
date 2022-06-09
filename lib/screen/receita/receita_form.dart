@@ -1,10 +1,12 @@
 import 'package:farmasys/dto/cliente.dart';
+import 'package:farmasys/dto/farmaceutico.dart';
 import 'package:farmasys/dto/medicamento.dart';
 import 'package:farmasys/dto/notificacao.dart';
 import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/dto/tipo_notificacao.dart';
 import 'package:farmasys/dto/tipo_receita.dart';
 import 'package:farmasys/exception/exception_message.dart';
+import 'package:farmasys/screen/cliente/cliente_select.dart';
 import 'package:farmasys/screen/component/full_scroll.dart';
 import 'package:farmasys/screen/helper/estados.dart';
 import 'package:farmasys/screen/mask/interface/i_mask_date.dart';
@@ -13,6 +15,7 @@ import 'package:farmasys/screen/medico/medico_form.dart';
 import 'package:farmasys/screen/medico/medico_select.dart';
 import 'package:farmasys/screen/tipo_notificacao/tipo_notificacao_form.dart';
 import 'package:farmasys/screen/tipo_receita/tipo_receita_form.dart';
+import 'package:farmasys/service/interface/i_service_authentication_farmaceutico.dart';
 import 'package:farmasys/service/interface/i_service_cliente.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_receita.dart';
@@ -87,6 +90,10 @@ class _ReceitaFormState extends State<ReceitaForm> {
     return _receita.dataEmissao != null ? _dateFormat.format(_receita.dataEmissao!) : '';
   }
 
+  final _medicoController = TextEditingController();
+
+  final _clienteController = TextEditingController();
+
   final _codigoController = TextEditingController();
 
   @override
@@ -94,13 +101,14 @@ class _ReceitaFormState extends State<ReceitaForm> {
     super.initState();
     _receita = widget.receita;
     _codigoController.text = _receita.notificacao?.codigo.codigo ?? '';
+    _receita.farmaceuticoId = context.read<IServiceAuthenticationFarmaceutico>().currentUser?.id;
   }
 
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Receita Add'),
+        title: const Text('Cadastrar receita'),
       ),
       body: LayoutBuilder(
         builder: (ctx, constraints) {
@@ -141,26 +149,20 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 20,
-                                horizontal: 10,
+                            child: TextFormField(
+                              controller: _medicoController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Clique para selecionar um médico',
                               ),
-                              child: Text(
-                                _receita.medico.nome == '' ? 'Clique para selecionar um médico' : _receita.medico.nome,
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 15,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 1,
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Você precisa selecionar um médico';
+                                }
+                                return null;
+                              },
+                              enabled: false,
                             ),
                             onTap: () async {
                               final medico = await MedicoSelect.show(ctx);
@@ -168,6 +170,58 @@ class _ReceitaFormState extends State<ReceitaForm> {
                                 setState(() {
                                   _receita.medico = medico;
                                   _receita.medicoId = medico.id;
+                                  _medicoController.text = medico.nome;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        ElevatedButton(
+                          child: const Icon(Icons.add),
+                          onPressed: () async {
+                            await MedicoForm.show(ctx);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(
+                              15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            child: TextFormField(
+                              controller: _clienteController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Clique para selecionar um cliente',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Você precisa selecionar um cliente';
+                                }
+                                return null;
+                              },
+                              enabled: false,
+                            ),
+                            onTap: () async {
+                              final cliente = await ClienteSelect.show(ctx);
+                              if (cliente != null) {
+                                setState(() {
+                                  _receita.cliente = cliente;
+                                  _receita.clienteId = cliente.id;
+                                  _clienteController.text = cliente.nome;
                                 });
                               }
                             },
@@ -508,7 +562,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                                 duration: Duration(milliseconds: 1200),
                               ),
                             );
-                            // Navigator.of(ctx).pop();
+                            Navigator.of(ctx).pop();
                           }
                           //
                           on ExceptionMessage catch (error) {
