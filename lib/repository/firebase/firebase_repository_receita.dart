@@ -12,7 +12,7 @@ class FirebaseRepositoryReceita extends FirebaseRepositoryBase<Receita> implemen
 
   @override
   Future<Receita?> getByNotificacao(Notificacao notificacao) async {
-    final query = await firestore.collection('$tableName.notificacao.codigo').where('uf', isEqualTo: notificacao.codigo.uf).where('codigo', isEqualTo: notificacao.codigo.codigo).get();
+    final query = await firestore.collection(tableName).where('notificacao.codigo.uf', isEqualTo: notificacao.codigo.uf).where('notificacao.codigo.codigo', isEqualTo: notificacao.codigo.codigo).get();
     if (query.docs.isEmpty) {
       return null;
     }

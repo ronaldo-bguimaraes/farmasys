@@ -14,7 +14,7 @@ abstract class ServiceEntityBase<T extends IEntity> implements IServiceEntity<T>
   }
 
   @override
-  Future<void> remove(T entity, [IEntity? relatedEntity]) async {
+  Future<void> remove(T entity) async {
     final entityId = entity.id;
     if (entityId == null) {
       throw ExceptionMessage(
@@ -22,21 +22,21 @@ abstract class ServiceEntityBase<T extends IEntity> implements IServiceEntity<T>
         message: 'O id não pode ser nulo.',
       );
     }
-    _repositoryEntity.remove(entity, relatedEntity);
+    return await _repositoryEntity.remove(entity);
   }
 
   @override
-  Future<T?> getById(String? id, [IEntity? relatedEntity]) async {
-    return _repositoryEntity.getById(id, relatedEntity);
+  Future<T?> getById(String? id) async {
+    return _repositoryEntity.getById(id);
   }
 
   @override
-  Future<T> save(T entity, [IEntity? relatedEntity]) async {
+  Future<T> save(T entity) async {
     if (entity.id == null) {
-      return await _repositoryEntity.add(entity, relatedEntity);
+      return await _repositoryEntity.add(entity);
     }
     //
-    return await _repositoryEntity.set(entity, relatedEntity);
+    return await _repositoryEntity.set(entity);
   }
 
   @override

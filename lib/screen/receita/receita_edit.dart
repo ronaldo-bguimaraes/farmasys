@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ReceitaForm extends StatefulWidget {
+class ReceitaEdit extends StatefulWidget {
   final String title;
   final Receita receita;
   final List<TipoReceita> tiposReceita;
@@ -32,7 +32,7 @@ class ReceitaForm extends StatefulWidget {
   final List<TipoNotificacao> tiposNotificacao;
   final List<Cliente> clientes;
 
-  const ReceitaForm({
+  const ReceitaEdit({
     Key? key,
     required this.tiposReceita,
     required this.tiposNotificacao,
@@ -43,7 +43,7 @@ class ReceitaForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ReceitaForm> createState() => _ReceitaFormState();
+  State<ReceitaEdit> createState() => _ReceitaEditState();
 
   static void show(BuildContext ctx, [Receita? receita]) async {
     final List<TipoReceita> tiposReceita = await ctx.read<IServiceTipoReceita>().getAll();
@@ -54,7 +54,7 @@ class ReceitaForm extends StatefulWidget {
     Navigator.of(ctx).push(
       MaterialPageRoute(
         builder: (ctx) {
-          return ReceitaForm(
+          return ReceitaEdit(
             title: '${receita == null ? "Cadastrar" : "Editar"} receita',
             receita: receita ?? Receita(),
             tiposReceita: tiposReceita,
@@ -68,14 +68,14 @@ class ReceitaForm extends StatefulWidget {
   }
 }
 
-class _ReceitaFormState extends State<ReceitaForm> {
+class _ReceitaEditState extends State<ReceitaEdit> {
   final _formKey = GlobalKey<FormState>();
 
   final _dateFormat = DateFormat('dd/MM/yyyy');
 
   late Receita _receita;
 
-  late Notificacao _notificacao = Notificacao();
+  late Notificacao? _notificacao;
 
   List<TipoNotificacao> get _tiposNotificacao {
     return _receita.notificacao != null ? widget.tiposNotificacao : [];
@@ -99,11 +99,12 @@ class _ReceitaFormState extends State<ReceitaForm> {
   void initState() {
     super.initState();
     _receita = widget.receita;
-    if(_receita.notificacao != null) {
-      _notificacao = _receita.notificacao!;
-    }
+    _notificacao = _receita.notificacao;
     _codigoController.text = _receita.notificacao?.codigo.codigo ?? '';
     _receita.farmaceuticoId = context.read<IServiceAuthenticationFarmaceutico>().currentUser?.id;
+    //
+    _medicoController.text = _receita.medico.nome;
+    _clienteController.text = _receita.cliente.nome;
   }
 
   @override
@@ -311,7 +312,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       onChanged: (value) {
                         setState(() {
                           _receita.notificacao = value ? _notificacao : null;
-                          _codigoController.text = value ? _notificacao.codigo.codigo : '';
+                          _codigoController.text = value ? _notificacao?.codigo.codigo ?? '' : '';
                         });
                       },
                       contentPadding: EdgeInsets.zero,
@@ -321,7 +322,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                     ),
                     DropdownButtonFormField<String>(
                       isExpanded: true,
-                      value: _notificacao.codigo.uf,
+                      value: _notificacao?.codigo.uf,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: 'UF da notificação de receita',
@@ -335,7 +336,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
-                          _notificacao.codigo.uf = value!;
+                          _notificacao?.codigo.uf = value!;
                         });
                       },
                       validator: (value) {
@@ -352,7 +353,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       controller: _codigoController,
                       onChanged: (value) {
                         setState(() {
-                          _notificacao.codigo.codigo = value;
+                          _notificacao?.codigo.codigo = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -451,6 +452,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             isExpanded: true,
+                            value: _receita.item.medicamentoId,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Medicamento',

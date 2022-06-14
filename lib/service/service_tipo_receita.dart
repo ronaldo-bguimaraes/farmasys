@@ -13,10 +13,7 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
 
   final IRepositoryListaControle _repositoryListaControle;
 
-  ServiceTipoReceita(
-    this._repositoryTipoReceita,
-    this._repositoryListaControle,
-  ) : super(_repositoryTipoReceita);
+  ServiceTipoReceita(this._repositoryTipoReceita, this._repositoryListaControle) : super(_repositoryTipoReceita);
 
   @override
   Future<List<TipoReceita>> getAll([IEntity? relatedEntity]) async {
@@ -27,7 +24,7 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<void> remove(TipoReceita tipoReceita, [IEntity? relatedEntity]) async {
+  Future<void> remove(TipoReceita tipoReceita) async {
     if (tipoReceita.id == null) {
       throw ExceptionMessage(
         code: 'id-nulo',
@@ -49,7 +46,7 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<TipoReceita> save(TipoReceita tipoReceita, [IEntity? relatedEntity]) async {
+  Future<TipoReceita> save(TipoReceita tipoReceita) async {
     final nome = tipoReceita.nome;
     if (nome == '') {
       throw ExceptionMessage(

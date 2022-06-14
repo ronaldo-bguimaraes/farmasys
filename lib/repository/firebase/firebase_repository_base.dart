@@ -16,7 +16,7 @@ abstract class FirebaseRepositoryBase<T extends IEntity> implements IRepository<
   );
 
   @override
-  Future<T> add(T entity, [IEntity? relatedEntity]) async {
+  Future<T> add(T entity) async {
     final map = mapper.toMap(entity);
     map.remove('id');
     final ref = await firestore.collection(tableName).add(map);
@@ -37,12 +37,12 @@ abstract class FirebaseRepositoryBase<T extends IEntity> implements IRepository<
   }
 
   @override
-  Future<void> remove(T entity, [IEntity? relatedEntity]) async {
+  Future<void> remove(T entity) async {
     await firestore.collection(tableName).doc(entity.id).delete();
   }
 
   @override
-  Future<T?> getById(String? id, [IEntity? relatedEntity]) async {
+  Future<T?> getById(String? id) async {
     final snapshot = await firestore.collection(tableName).doc(id).get();
     final map = snapshot.data();
     if (map != null) {
@@ -68,7 +68,7 @@ abstract class FirebaseRepositoryBase<T extends IEntity> implements IRepository<
   }
 
   @override
-  Future<T> set(T entity, [IEntity? relatedEntity]) async {
+  Future<T> set(T entity) async {
     final map = mapper.toMap(entity);
     map.remove('id');
     await firestore.collection(tableName).doc(entity.id).set(map);

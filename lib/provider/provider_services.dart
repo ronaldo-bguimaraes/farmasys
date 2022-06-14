@@ -8,7 +8,6 @@ import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart'
 import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_tipo_notificacao.dart';
 import 'package:farmasys/repository/interface/i_repository_tipo_receita.dart';
-import 'package:farmasys/repository/interface/i_repository_venda.dart';
 import 'package:farmasys/service/firebase/firebase_service_authentication_farmaceutico.dart';
 import 'package:farmasys/service/interface/i_service_authentication_farmaceutico.dart';
 import 'package:farmasys/service/interface/i_service_cliente.dart';
@@ -21,7 +20,6 @@ import 'package:farmasys/service/interface/i_service_receita.dart';
 import 'package:farmasys/service/interface/i_service_tipo_notificacao.dart';
 import 'package:farmasys/service/interface/i_service_tipo_receita.dart';
 import 'package:farmasys/service/interface/i_service_lista_controle.dart';
-import 'package:farmasys/service/interface/i_service_venda.dart';
 import 'package:farmasys/service/service_cliente.dart';
 import 'package:farmasys/service/service_especialidade.dart';
 import 'package:farmasys/service/service_farmaceutico.dart';
@@ -32,7 +30,6 @@ import 'package:farmasys/service/service_principio_ativo.dart';
 import 'package:farmasys/service/service_receita.dart';
 import 'package:farmasys/service/service_tipo_notificacao.dart';
 import 'package:farmasys/service/service_tipo_receita.dart';
-import 'package:farmasys/service/service_venda.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -129,13 +126,6 @@ class ProviderServices extends StatelessWidget {
             ctx.read<IServiceMedicamento>(),
             ctx.read<IServiceTipoNotificacao>(),
             ctx.read<IServiceTipoReceita>(),
-          ),
-          lazy: true,
-        ),
-        Provider<IServiceVenda>(
-          create: (ctx) => ServiceVenda(
-            ctx.read<IRepositoryVenda>(),
-            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),

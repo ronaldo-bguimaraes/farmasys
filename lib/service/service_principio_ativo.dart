@@ -23,34 +23,36 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
     this._repositoryMedicamento,
   ) : super(_repositoryPrincipioAtivo);
 
+  Future<PrincipioAtivo> _getRelatedData(PrincipioAtivo principioAtivo) async {
+    if (principioAtivo.listaControleId != null) {
+      principioAtivo.listaControle = await _repositoryListaControle.getById(principioAtivo.listaControleId);
+    }
+    return principioAtivo;
+  }
+
   @override
   Future<List<PrincipioAtivo>> getAll([IEntity? relatedEntity]) async {
     final principiosAtivos = await super.getAll();
     principiosAtivos.sort((a, b) => a.nome.compareTo(b.nome));
     return await Future.wait(
       principiosAtivos.map((principioAtivo) async {
-        if (principioAtivo.listaControleId != null) {
-          principioAtivo.listaControle = await _repositoryListaControle.getById(principioAtivo.listaControleId);
-        }
-        return principioAtivo;
+        return await _getRelatedData(principioAtivo);
       }),
     );
   }
 
   @override
-  Future<PrincipioAtivo?> getById(String? id, [IEntity? relatedEntity]) async {
+  Future<PrincipioAtivo?> getById(String? id) async {
     final principioAtivo = await super.getById(id);
     if (principioAtivo != null) {
-      if (principioAtivo.listaControleId != null) {
-        principioAtivo.listaControle = await _repositoryListaControle.getById(principioAtivo.listaControleId);
-      }
+      return await _getRelatedData(principioAtivo);
     }
     return principioAtivo;
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<void> remove(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) async {
+  Future<void> remove(PrincipioAtivo principioAtivo) async {
     if (principioAtivo.id == null) {
       throw ExceptionMessage(
         code: 'id-nulo',
@@ -72,7 +74,7 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<PrincipioAtivo> save(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) async {
+  Future<PrincipioAtivo> save(PrincipioAtivo principioAtivo) async {
     final nome = principioAtivo.nome;
     if (nome == '') {
       throw ExceptionMessage(
@@ -80,17 +82,11 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
         message: 'O nome do princípio ativo não pode ser vazio.',
       );
     }
-    if (principioAtivo.id == null) {
-      if (await _repositoryPrincipioAtivo.getByNome(nome) == null) {
-        return super.save(principioAtivo);
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'existe',
-          message: 'O princípio ativo já existe.',
-        );
-      }
+    if (principioAtivo.id == null && await _repositoryPrincipioAtivo.getByNome(nome) != null) {
+      throw ExceptionMessage(
+        code: 'existe',
+        message: 'O princípio ativo já existe.',
+      );
     }
     return super.save(principioAtivo);
   }
@@ -101,10 +97,7 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
       principiosAtivos.sort((a, b) => a.nome.compareTo(b.nome));
       return await Future.wait(
         principiosAtivos.map((principioAtivo) async {
-          if (principioAtivo.listaControleId != null) {
-            principioAtivo.listaControle = await _repositoryListaControle.getById(principioAtivo.listaControleId);
-          }
-          return principioAtivo;
+          return await _getRelatedData(principioAtivo);
         }),
       );
     });

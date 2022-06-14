@@ -13,7 +13,7 @@ class ServiceFarmaceutico extends ServiceUsuario<Farmaceutico> implements IServi
 
   ServiceFarmaceutico(
     this._repositoryFarmaceutico,
-    this._authFarmaceutico,
+    this._authFarmaceutico
   ) : super(_repositoryFarmaceutico, _authFarmaceutico);
 
   @override

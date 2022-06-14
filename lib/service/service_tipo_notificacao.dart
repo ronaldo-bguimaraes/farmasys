@@ -27,7 +27,7 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<void> remove(TipoNotificacao tipoNotificacao, [IEntity? relatedEntity]) async {
+  Future<void> remove(TipoNotificacao tipoNotificacao) async {
     if (tipoNotificacao.id == null) {
       throw ExceptionMessage(
         code: 'id-nulo',
@@ -49,7 +49,7 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<TipoNotificacao> save(TipoNotificacao tipoNotificacao, [IEntity? relatedEntity]) async {
+  Future<TipoNotificacao> save(TipoNotificacao tipoNotificacao) async {
     final nome = tipoNotificacao.nome;
     if (nome == '') {
       throw ExceptionMessage(

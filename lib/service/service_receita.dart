@@ -13,7 +13,6 @@ import 'package:farmasys/service/service_entity_base.dart';
 import 'package:intl/intl.dart';
 
 class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceReceita {
-  // ignore: unused_field
   final IRepositoryReceita _repositoryReceita;
 
   final IRepositoryMedico _repositoryMedico;
@@ -38,134 +37,55 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
     this._serviceTipoReceita,
   ) : super(_repositoryReceita);
 
-  @override
-  Future<List<Receita>> getAll([IEntity? relatedEntity]) async {
-    final receitas = await super.getAll();
-    receitas.sort((a, b) => a.dataDispensacao!.compareTo(b.dataDispensacao!));
-    return await Future.wait(
-      receitas.map((receita) async {
-        final medico = await _repositoryMedico.getById(receita.medicoId);
-        if (medico != null) {
-          receita.medico = medico;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar médico da receita.',
-          );
-        }
-        final cliente = await _repositoryCliente.getById(receita.clienteId);
-        if (cliente != null) {
-          receita.cliente = cliente;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar cliente da receita.',
-          );
-        }
-        final farmaceutico = await _repositoryFarmaceutico.getById(receita.farmaceuticoId);
-        if (farmaceutico != null) {
-          receita.farmaceutico = farmaceutico;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar farmaceutico da receita.',
-          );
-        }
-        final medicamento = await _serviceMedicamento.getById(receita.item.medicamentoId);
-        if (medicamento != null) {
-          receita.item.medicamento = medicamento;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar medicamento do item da receita.',
-          );
-        }
-        final tipoNotificacao = await _serviceTipoNotificacao.getById(receita.notificacao?.tipoNotificacaoId);
-        if (tipoNotificacao != null) {
-          receita.notificacao?.tipoNotificacao = tipoNotificacao;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar tipo de notificação da notificação da receita.',
-          );
-        }
-        final tipoReceita = await _serviceTipoReceita.getById(receita.tipoReceitaId);
-        if (tipoReceita != null) {
-          receita.tipoReceita = tipoReceita;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar tipo de receita da receita.',
-          );
-        }
-        return receita;
-      }),
-    );
-  }
-
-  @override
-  Future<Receita?> getById(String? id, [IEntity? relatedEntity]) async {
-    final receita = await super.getById(id);
-    if (receita != null) {
-      final medico = await _repositoryMedico.getById(receita.medicoId);
-      if (medico != null) {
-        receita.medico = medico;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar médico da receita.',
-        );
-      }
-      final cliente = await _repositoryCliente.getById(receita.clienteId);
-      if (cliente != null) {
-        receita.cliente = cliente;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar cliente da receita.',
-        );
-      }
-      final farmaceutico = await _repositoryFarmaceutico.getById(receita.farmaceuticoId);
-      if (farmaceutico != null) {
-        receita.farmaceutico = farmaceutico;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar farmaceutico da receita.',
-        );
-      }
-      final medicamento = await _serviceMedicamento.getById(receita.item.medicamentoId);
-      if (medicamento != null) {
-        receita.item.medicamento = medicamento;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar medicamento do item da receita.',
-        );
-      }
-      final tipoNotificacao = await _serviceTipoNotificacao.getById(receita.notificacao?.tipoNotificacaoId);
+  Future<Receita> _getRelatedData(Receita receita) async {
+    final medico = await _repositoryMedico.getById(receita.medicoId);
+    if (medico != null) {
+      receita.medico = medico;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar médico da receita.',
+      );
+    }
+    final cliente = await _repositoryCliente.getById(receita.clienteId);
+    if (cliente != null) {
+      receita.cliente = cliente;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar cliente da receita.',
+      );
+    }
+    final farmaceutico = await _repositoryFarmaceutico.getById(receita.farmaceuticoId);
+    if (farmaceutico != null) {
+      receita.farmaceutico = farmaceutico;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar farmaceutico da receita.',
+      );
+    }
+    final medicamento = await _serviceMedicamento.getById(receita.item.medicamentoId);
+    if (medicamento != null) {
+      receita.item.medicamento = medicamento;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar medicamento do item da receita.',
+      );
+    }
+    if (receita.notificacao != null) {
+      final tipoNotificacao = await _serviceTipoNotificacao.getById(receita.notificacao!.tipoNotificacaoId);
       if (tipoNotificacao != null) {
-        receita.notificacao?.tipoNotificacao = tipoNotificacao;
+        receita.notificacao!.tipoNotificacao = tipoNotificacao;
       }
       //
       else {
@@ -174,24 +94,44 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
           message: 'Erro ao buscar tipo de notificação da notificação da receita.',
         );
       }
-      final tipoReceita = await _serviceTipoReceita.getById(receita.tipoReceitaId);
-      if (tipoReceita != null) {
-        receita.tipoReceita = tipoReceita;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar tipo de receita da receita.',
-        );
-      }
+    }
+    final tipoReceita = await _serviceTipoReceita.getById(receita.tipoReceitaId);
+    if (tipoReceita != null) {
+      receita.tipoReceita = tipoReceita;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar tipo de receita da receita.',
+      );
+    }
+    return receita;
+  }
+
+  @override
+  Future<List<Receita>> getAll([IEntity? relatedEntity]) async {
+    final receitas = await super.getAll();
+    receitas.sort((a, b) => a.dataDispensacao!.compareTo(b.dataDispensacao!));
+    return await Future.wait(
+      receitas.map((receita) async {
+        return await _getRelatedData(receita);
+      }),
+    );
+  }
+
+  @override
+  Future<Receita?> getById(String? id) async {
+    final receita = await super.getById(id);
+    if (receita != null) {
+      return await _getRelatedData(receita);
     }
     return receita;
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<Receita> save(Receita receita, [IEntity? relatedEntity]) async {
+  Future<Receita> save(Receita receita) async {
     final dataEmissao = receita.dataEmissao;
 
     // verifica se a data de emissao não é nula
@@ -222,11 +162,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
 
     // verifica se o medicamento possui lista de controle
     if (listaControle != null) {
-      final dataFinal = dataEmissao.add(
-        Duration(
-          days: listaControle.prazo,
-        ),
-      );
+      final dataFinal = dataEmissao.add(Duration(days: listaControle.prazo));
 
       // verifica se a receita venceu
       if (DateTime.now().difference(dataEmissao).inDays < 0) {
@@ -261,7 +197,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
           );
         }
         final notificacao = await _repositoryReceita.getByNotificacao(notificacaoReceita);
-
+        
         if (notificacao != null) {
           throw ExceptionMessage(
             code: 'existe',
@@ -308,73 +244,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
       receitas.sort((a, b) => a.dataDispensacao!.compareTo(b.dataDispensacao!));
       return await Future.wait(
         receitas.map((receita) async {
-          final medico = await _repositoryMedico.getById(receita.medicoId);
-          if (medico != null) {
-            receita.medico = medico;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar médico da receita.',
-            );
-          }
-          final cliente = await _repositoryCliente.getById(receita.clienteId);
-          if (cliente != null) {
-            receita.cliente = cliente;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar cliente da receita.',
-            );
-          }
-          final farmaceutico = await _repositoryFarmaceutico.getById(receita.farmaceuticoId);
-          if (farmaceutico != null) {
-            receita.farmaceutico = farmaceutico;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar farmaceutico da receita.',
-            );
-          }
-          final medicamento = await _serviceMedicamento.getById(receita.item.medicamentoId);
-          if (medicamento != null) {
-            receita.item.medicamento = medicamento;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar medicamento do item da receita.',
-            );
-          }
-          final tipoNotificacao = await _serviceTipoNotificacao.getById(receita.notificacao?.tipoNotificacaoId);
-          if (tipoNotificacao != null) {
-            receita.notificacao?.tipoNotificacao = tipoNotificacao;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar tipo de notificação da notificação da receita.',
-            );
-          }
-          final tipoReceita = await _serviceTipoReceita.getById(receita.tipoReceitaId);
-          if (tipoReceita != null) {
-            receita.tipoReceita = tipoReceita;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar tipo de receita da receita.',
-            );
-          }
-          return receita;
+          return await _getRelatedData(receita);
         }),
       );
     });

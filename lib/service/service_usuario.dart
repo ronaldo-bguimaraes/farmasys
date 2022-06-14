@@ -11,10 +11,7 @@ abstract class ServiceUsuario<T extends IUsuario> extends ServiceEntityBase<T> i
 
   final IServiceAuthentication<T> _authUsuario;
 
-  ServiceUsuario(
-    this._repositoryUsuario,
-    this._authUsuario,
-  ) : super(_repositoryUsuario);
+  ServiceUsuario(this._repositoryUsuario, this._authUsuario) : super(_repositoryUsuario);
 
   @override
   T? get currentUser {

@@ -5,10 +5,10 @@ abstract class IRepository<T extends IEntity> {
   abstract final String tableName;
   abstract final IMapper<T> mapper;
 
-  Future<T> add(T entity, [IEntity? relatedEntity]);
+  Future<T> add(T entity);
   Future<List<T>> getAll([IEntity? relatedEntity]);
-  Future<void> remove(T entity, [IEntity? relatedEntity]);
-  Future<T?> getById(String? id, [IEntity? relatedEntity]);
+  Future<void> remove(T entity);
+  Future<T?> getById(String? id);
   Stream<List<T>> streamAll([IEntity? relatedEntity]);
-  Future<T> set(T entity, [IEntity? relatedEntity]);
+  Future<T> set(T entity);
 }

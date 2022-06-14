@@ -1,7 +1,6 @@
 import 'package:farmasys/mapper/interface/i_mapper_cliente.dart';
 import 'package:farmasys/mapper/interface/i_mapper_especialidade.dart';
 import 'package:farmasys/mapper/interface/i_mapper_farmaceutico.dart';
-import 'package:farmasys/mapper/interface/i_mapper_item_venda.dart';
 import 'package:farmasys/mapper/interface/i_mapper_lista_controle.dart';
 import 'package:farmasys/mapper/interface/i_mapper_medicamento.dart';
 import 'package:farmasys/mapper/interface/i_mapper_medico.dart';
@@ -13,7 +12,6 @@ import 'package:farmasys/mapper/interface/i_mapper_venda.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_cliente.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_especialidade.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_farmaceutico.dart';
-import 'package:farmasys/repository/firebase/firebase_repository_item_venda.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_lista_controle.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_medicamento.dart';
 import 'package:farmasys/repository/firebase/firebase_repository_medico.dart';
@@ -25,7 +23,6 @@ import 'package:farmasys/repository/firebase/firebase_repository_venda.dart';
 import 'package:farmasys/repository/interface/i_repository_cliente.dart';
 import 'package:farmasys/repository/interface/i_repository_especialidade.dart';
 import 'package:farmasys/repository/interface/i_repository_farmaceutico.dart';
-import 'package:farmasys/repository/interface/i_repository_item_venda.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
 import 'package:farmasys/repository/interface/i_repository_medico.dart';
@@ -113,12 +110,6 @@ class ProviderRepositories extends StatelessWidget {
         Provider<IRepositoryReceita>(
           create: (ctx) => FirebaseRepositoryReceita(
             ctx.read<IMapperReceita>(),
-          ),
-          lazy: true,
-        ),
-        Provider<IRepositoryItemVenda>(
-          create: (ctx) => FirebaseRepositoryItemVenda(
-            ctx.read<IMapperItemVenda>(),
           ),
           lazy: true,
         ),

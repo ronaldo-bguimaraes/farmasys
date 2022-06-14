@@ -1,6 +1,7 @@
 import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
+import 'package:farmasys/screen/receita/receita_edit.dart';
 import 'package:farmasys/screen/receita/receita_form.dart';
 import 'package:farmasys/service/interface/i_service_receita.dart';
 import 'package:flutter/material.dart';
@@ -55,17 +56,23 @@ class _ReceitaListState extends State<ReceitaList> {
                     'Cliente: ${receita.cliente.nome}',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Valor Total: R\$ ${receita.item.preco * receita.item.quantidade}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.stretch,
               );
             },
-            editShow: (context, receita) {
-              ScaffoldMessenger.of(ctx).showSnackBar(
-                const SnackBar(
-                  content: Text('A edição de receita ainda não foi implementada.'),
-                  duration: Duration(milliseconds: 1200),
-                ),
-              );
+            editShow: (ctx, receita) {
+              ReceitaEdit.show(ctx, receita);
+              // ScaffoldMessenger.of(ctx).showSnackBar(
+              //   const SnackBar(
+              //     content: Text('A edição de receita ainda não foi implementada.'),
+              //     duration: Duration(milliseconds: 1200),
+              //   ),
+              // );
             },
             removeAction: ctx.read<IServiceReceita>().remove,
           );

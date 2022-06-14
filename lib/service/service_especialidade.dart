@@ -13,10 +13,7 @@ class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements I
 
   final IRepositoryMedico _repositoryMedico;
 
-  ServiceEspecialidade(
-    this._repositoryEspecialidade,
-    this._repositoryMedico,
-  ) : super(_repositoryEspecialidade);
+  ServiceEspecialidade(this._repositoryEspecialidade, this._repositoryMedico) : super(_repositoryEspecialidade);
 
   @override
   Future<List<Especialidade>> getAll([IEntity? relatedEntity]) async {
@@ -27,7 +24,7 @@ class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements I
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<Especialidade> save(Especialidade especialidade, [IEntity? relatedEntity]) async {
+  Future<Especialidade> save(Especialidade especialidade) async {
     final nome = especialidade.nome;
     if (nome == '') {
       throw ExceptionMessage(
@@ -35,31 +32,24 @@ class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements I
         message: 'O nome da especialidade não pode ser vazio.',
       );
     }
-    if (especialidade.id == null) {
-      if (await _repositoryEspecialidade.getByNome(nome) == null) {
-        return super.save(especialidade);
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'existe',
-          message: 'A especialidade já existe.',
-        );
-      }
+    if (especialidade.id == null && await _repositoryEspecialidade.getByNome(nome) != null) {
+      throw ExceptionMessage(
+        code: 'existe',
+        message: 'A especialidade já existe.',
+      );
     }
     return super.save(especialidade);
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<void> remove(Especialidade especialidade, [IEntity? relatedEntity]) async {
+  Future<void> remove(Especialidade especialidade) async {
     if (especialidade.id == null) {
       throw ExceptionMessage(
         code: 'id-vazio',
         message: 'O id da especialidade não pode ser nulo.',
       );
     }
-
     Medico? medico = await _repositoryMedico.getByEspecialidade(especialidade);
     if (medico != null) {
       throw ExceptionMessage(
@@ -68,9 +58,7 @@ class ServiceEspecialidade extends ServiceEntityBase<Especialidade> implements I
       );
     }
     //
-    else {
-      await super.remove(especialidade);
-    }
+    return await super.remove(especialidade);
   }
 
   @override

@@ -17,50 +17,44 @@ class ServiceMedico extends ServiceEntityBase<Medico> implements IServiceMedico 
     this._repositoryEspecialidade,
   ) : super(_repositoryMedico);
 
+  Future<Medico> _getRelatedData(Medico medico) async {
+    final especialidade = await _repositoryEspecialidade.getById(medico.especialidadeId);
+    if (especialidade != null) {
+      medico.especialidade = especialidade;
+    }
+    //
+    else {
+      throw ExceptionMessage(
+        code: 'erro-get-data',
+        message: 'Erro ao buscar especialidade do médico.',
+      );
+    }
+    return medico;
+  }
+
   @override
   Future<List<Medico>> getAll([IEntity? relatedEntity]) async {
     final medicos = await super.getAll();
     medicos.sort((a, b) => a.nome.compareTo(b.nome));
     return await Future.wait(
       medicos.map((medico) async {
-        final especialidade = await _repositoryEspecialidade.getById(medico.especialidadeId);
-        if (especialidade != null) {
-          medico.especialidade = especialidade;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar especialidade do médico.',
-          );
-        }
-        return medico;
+        return await _getRelatedData(medico);
       }),
     );
   }
 
   @override
-  Future<Medico?> getById(String? id, [IEntity? relatedEntity]) async {
+  Future<Medico?> getById(String? id) async {
     final medico = await super.getById(id);
     if (medico != null) {
-      final especialidade = await _repositoryEspecialidade.getById(medico.especialidadeId);
-      if (especialidade != null) {
-        medico.especialidade = especialidade;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'erro-get-data',
-          message: 'Erro ao buscar especialidade do médico.',
-        );
-      }
+      return await _getRelatedData(medico);
     }
     return medico;
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<Medico> save(Medico medico, [IEntity? relatedEntity]) {
+  Future<Medico> save(Medico medico) {
     if (medico.especialidadeId == null) {
       throw Exception('A propriedade especialidadeId não pode ser nula.');
     }
@@ -73,18 +67,7 @@ class ServiceMedico extends ServiceEntityBase<Medico> implements IServiceMedico 
       medicos.sort((a, b) => a.nome.compareTo(b.nome));
       return await Future.wait(
         medicos.map((medico) async {
-          final especialidade = await _repositoryEspecialidade.getById(medico.especialidadeId);
-          if (especialidade != null) {
-            medico.especialidade = especialidade;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar especialidade do médico.',
-            );
-          }
-          return medico;
+          return await _getRelatedData(medico);
         }),
       );
     });

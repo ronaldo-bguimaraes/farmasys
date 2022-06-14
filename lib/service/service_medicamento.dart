@@ -19,63 +19,44 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
     this._repositoryPrincipioAtivo,
   ) : super(_repositoryMedicamento);
 
+  Future<Medicamento> _getRelatedData(Medicamento medicamento) async {
+    final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
+    if (principioAtivo == null) {
+      throw ExceptionMessage(
+        code: 'error-get-data',
+        message: 'Erro ao buscar princípio ativo.',
+      );
+    }
+    medicamento.principioAtivo = principioAtivo;
+    return medicamento;
+  }
+
   @override
   Future<List<Medicamento>> getAll([IEntity? relatedEntity]) async {
     final medicamentos = await super.getAll();
     medicamentos.sort((a, b) => a.nome.compareTo(b.nome));
     return await Future.wait(
       medicamentos.map((medicamento) async {
-        final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
-        if (principioAtivo != null) {
-          medicamento.principioAtivo = principioAtivo;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'error-get-data',
-            message: 'Erro ao buscar princípio ativo.',
-          );
-        }
-        return medicamento;
+        return await _getRelatedData(medicamento);
       }),
     );
   }
 
   @override
-  Future<Medicamento?> getById(String? id, [IEntity? relatedEntity]) async {
+  Future<Medicamento?> getById(String? id) async {
     final medicamento = await super.getById(id);
     if (medicamento != null) {
-      final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
-      if (principioAtivo != null) {
-        medicamento.principioAtivo = principioAtivo;
-      }
-      //
-      else {
-        throw ExceptionMessage(
-          code: 'error-get-data',
-          message: 'Erro ao buscar princípio ativo.',
-        );
-      }
+      return await _getRelatedData(medicamento);
     }
     return medicamento;
   }
 
   @override
-  Future<Medicamento?> getByPrincipioAtivo(PrincipioAtivo principioAtivo, [IEntity? relatedEntity]) async {
+  Future<Medicamento?> getByPrincipioAtivo(PrincipioAtivo principioAtivo) async {
     final medicamento = await _repositoryMedicamento.getByPrincipioAtivo(principioAtivo);
     if (medicamento != null) {
       if (medicamento.principioAtivoId != null) {
-        final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
-        if (principioAtivo != null) {
-          medicamento.principioAtivo = principioAtivo;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'error-get-data',
-            message: 'Erro ao buscar princípio ativo.',
-          );
-        }
+        return await _getRelatedData(medicamento);
       }
     }
     return medicamento;
@@ -83,7 +64,7 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<Medicamento> save(Medicamento medicamento, [IEntity? relatedEntity]) {
+  Future<Medicamento> save(Medicamento medicamento) {
     if (medicamento.principioAtivoId == null) {
       throw Exception('A propriedade principioAtivoId não pode ser nula.');
     }
@@ -96,18 +77,7 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
       medicamentos.sort((a, b) => a.nome.compareTo(b.nome));
       return await Future.wait(
         medicamentos.map((medicamento) async {
-          final principioAtivo = await _repositoryPrincipioAtivo.getById(medicamento.principioAtivoId);
-          if (principioAtivo != null) {
-            medicamento.principioAtivo = principioAtivo;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'error-get-data',
-              message: 'Erro ao buscar princípio ativo.',
-            );
-          }
-          return medicamento;
+          return await _getRelatedData(medicamento);
         }),
       );
     });

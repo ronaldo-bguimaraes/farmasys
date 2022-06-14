@@ -22,7 +22,7 @@ class Receita implements IEntity {
   DateTime? dataDispensacao;
   ItemReceita item;
   int frequencia;
-
+  
   Receita({
     this.id,
     this.medicoId,

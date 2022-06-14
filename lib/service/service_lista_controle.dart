@@ -27,84 +27,58 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
     this._repositoryPrincipioAtivo,
   ) : super(_repositoryListaControle);
 
+  Future<ListaControle> _getRelatedData(ListaControle listaControle) async {
+    if (listaControle.tipoReceitaId != null) {
+      final tipoReceita = await _repositoryTipoReceita.getById(listaControle.tipoReceitaId);
+      if (tipoReceita != null) {
+        listaControle.tipoReceita = tipoReceita;
+      }
+      //
+      else {
+        throw ExceptionMessage(
+          code: 'erro-get-data',
+          message: 'Erro ao buscar tipo de receita da lista de controle.',
+        );
+      }
+    }
+    if (listaControle.tipoNotificacaoId != null) {
+      listaControle.tipoNotificacao = await _repositoryTipoNotificacao.getById(listaControle.tipoNotificacaoId);
+    }
+    return listaControle;
+  }
+
   @override
   Future<List<ListaControle>> getAll([IEntity? relatedEntity]) async {
     final listasControle = await super.getAll();
     listasControle.sort((a, b) => a.nome.compareTo(b.nome));
     return await Future.wait(
       listasControle.map((listaControle) async {
-        if (listaControle.tipoReceitaId != null) {
-          final tipoReceita = await _repositoryTipoReceita.getById(listaControle.tipoReceitaId);
-          if (tipoReceita != null) {
-            listaControle.tipoReceita = tipoReceita;
-          }
-          //
-          else {
-            throw ExceptionMessage(
-              code: 'erro-get-data',
-              message: 'Erro ao buscar tipo de receita da lista de controle.',
-            );
-          }
-        }
-        if (listaControle.tipoNotificacaoId != null) {
-          listaControle.tipoNotificacao = await _repositoryTipoNotificacao.getById(listaControle.tipoNotificacaoId);
-        }
-        return listaControle;
+        return await _getRelatedData(listaControle);
       }),
     );
   }
 
   @override
-  Future<ListaControle?> getById(String? id, [IEntity? relatedEntity]) async {
+  Future<ListaControle?> getById(String? id) async {
     final listaControle = await super.getById(id);
     if (listaControle != null) {
-      if (listaControle.tipoReceitaId != null) {
-        final tipoReceita = await _repositoryTipoReceita.getById(listaControle.tipoReceitaId);
-        if (tipoReceita != null) {
-          listaControle.tipoReceita = tipoReceita;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar tipo de receita da lista de controle.',
-          );
-        }
-      }
-      if (listaControle.tipoNotificacaoId != null) {
-        listaControle.tipoNotificacao = await _repositoryTipoNotificacao.getById(listaControle.tipoNotificacaoId);
-      }
+      return await _getRelatedData(listaControle);
     }
     return listaControle;
   }
 
   @override
-  Future<ListaControle?> getByTipoNotificacao(TipoNotificacao tipoNotificacao, [IEntity? relatedEntity]) async {
+  Future<ListaControle?> getByTipoNotificacao(TipoNotificacao tipoNotificacao) async {
     final listaControle = await _repositoryListaControle.getByTipoNotificacao(tipoNotificacao);
     if (listaControle != null) {
-      if (listaControle.tipoReceitaId != null) {
-        final tipoReceita = await _repositoryTipoReceita.getById(listaControle.tipoReceitaId);
-        if (tipoReceita != null) {
-          listaControle.tipoReceita = tipoReceita;
-        }
-        //
-        else {
-          throw ExceptionMessage(
-            code: 'erro-get-data',
-            message: 'Erro ao buscar tipo de receita da lista de controle.',
-          );
-        }
-      }
-      if (listaControle.tipoNotificacaoId != null) {
-        listaControle.tipoNotificacao = await _repositoryTipoNotificacao.getById(listaControle.tipoNotificacaoId);
-      }
+      return await _getRelatedData(listaControle);
     }
     return listaControle;
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<void> remove(ListaControle listaControle, [IEntity? relatedEntity]) async {
+  Future<void> remove(ListaControle listaControle) async {
     if (listaControle.id == null) {
       throw ExceptionMessage(
         code: 'id-nulo',
@@ -119,14 +93,12 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
       );
     }
     //
-    else {
-      await super.remove(listaControle);
-    }
+    await super.remove(listaControle);
   }
 
   @override
   // ignore: avoid_renaming_method_parameters
-  Future<ListaControle> save(ListaControle listaControle, [IEntity? relatedEntity]) async {
+  Future<ListaControle> save(ListaControle listaControle) async {
     final nome = listaControle.nome;
     if (nome == '') {
       throw ExceptionMessage(
@@ -155,23 +127,7 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
       listasControle.sort((a, b) => a.nome.compareTo(b.nome));
       return await Future.wait(
         listasControle.map((listaControle) async {
-          if (listaControle.tipoReceitaId != null) {
-            final tipoReceita = await _repositoryTipoReceita.getById(listaControle.tipoReceitaId);
-            if (tipoReceita != null) {
-              listaControle.tipoReceita = tipoReceita;
-            }
-            //
-            else {
-              throw ExceptionMessage(
-                code: 'erro-get-data',
-                message: 'Erro ao buscar tipo de receita da lista de controle.',
-              );
-            }
-          }
-          if (listaControle.tipoNotificacaoId != null) {
-            listaControle.tipoNotificacao = await _repositoryTipoNotificacao.getById(listaControle.tipoNotificacaoId);
-          }
-          return listaControle;
+          return await _getRelatedData(listaControle);
         }),
       );
     });
