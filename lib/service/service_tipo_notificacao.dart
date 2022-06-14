@@ -1,8 +1,10 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/lista_controle.dart';
+import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/dto/tipo_notificacao.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
+import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_tipo_notificacao.dart';
 import 'package:farmasys/service/interface/i_service_tipo_notificacao.dart';
 import 'package:farmasys/service/service_entity_base.dart';
@@ -13,9 +15,12 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
 
   final IRepositoryListaControle _repositoryListaControle;
 
+  final IRepositoryReceita _repositoryReceita;
+
   ServiceTipoNotificacao(
     this._repositoryTipoNotificacao,
     this._repositoryListaControle,
+    this._repositoryReceita,
   ) : super(_repositoryTipoNotificacao);
 
   @override
@@ -41,10 +46,15 @@ class ServiceTipoNotificacao extends ServiceEntityBase<TipoNotificacao> implemen
         message: 'O tipo de notificação está em uso.',
       );
     }
-    //
-    else {
-      await super.remove(tipoNotificacao);
+    Receita? receita = await _repositoryReceita.getByTipoNotificacao(tipoNotificacao);
+    if (receita != null) {
+      throw ExceptionMessage(
+        code: 'em-uso',
+        message: 'O tipo de notificação está em uso.',
+      );
     }
+    //
+    return await super.remove(tipoNotificacao);
   }
 
   @override

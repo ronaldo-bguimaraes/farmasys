@@ -1,7 +1,6 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/lista_controle.dart';
 import 'package:farmasys/dto/principio_ativo.dart';
-import 'package:farmasys/dto/tipo_notificacao.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
 import 'package:farmasys/repository/interface/i_repository_principio_ativo.dart';
@@ -68,15 +67,6 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
   }
 
   @override
-  Future<ListaControle?> getByTipoNotificacao(TipoNotificacao tipoNotificacao) async {
-    final listaControle = await _repositoryListaControle.getByTipoNotificacao(tipoNotificacao);
-    if (listaControle != null) {
-      return await _getRelatedData(listaControle);
-    }
-    return listaControle;
-  }
-
-  @override
   // ignore: avoid_renaming_method_parameters
   Future<void> remove(ListaControle listaControle) async {
     if (listaControle.id == null) {
@@ -93,7 +83,7 @@ class ServiceListaControle extends ServiceEntityBase<ListaControle> implements I
       );
     }
     //
-    await super.remove(listaControle);
+    return await super.remove(listaControle);
   }
 
   @override

@@ -37,6 +37,14 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
     this._serviceTipoReceita,
   ) : super(_repositoryReceita);
 
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<void> cancel(Receita receita) async {
+    receita.item.medicamento.quantidade += receita.item.quantidade;
+    await _serviceMedicamento.save(receita.item.medicamento);
+    return super.remove(receita);
+  }
+
   Future<Receita> _getRelatedData(Receita receita) async {
     final medico = await _repositoryMedico.getById(receita.medicoId);
     if (medico != null) {
@@ -153,7 +161,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
 
     final notificacaoReceita = receita.notificacao;
 
-    if (listaControle == null && notificacaoReceita != null) {
+    if (listaControle?.tipoNotificacao == null && notificacaoReceita != null) {
       throw ExceptionMessage(
         code: 'notificacao-invalida',
         message: 'Esse medicamento não requer notificação de receita.',
@@ -197,7 +205,7 @@ class ServiceReceita extends ServiceEntityBase<Receita> implements IServiceRecei
           );
         }
         final notificacao = await _repositoryReceita.getByNotificacao(notificacaoReceita);
-        
+
         if (notificacao != null) {
           throw ExceptionMessage(
             code: 'existe',

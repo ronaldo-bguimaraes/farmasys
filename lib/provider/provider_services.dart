@@ -63,6 +63,7 @@ class ProviderServices extends StatelessWidget {
           create: (ctx) => ServiceMedico(
             ctx.read<IRepositoryMedico>(),
             ctx.read<IRepositoryEspecialidade>(),
+            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),
@@ -87,12 +88,14 @@ class ProviderServices extends StatelessWidget {
           create: (ctx) => ServiceMedicamento(
             ctx.read<IRepositoryMedicamento>(),
             ctx.read<IServicePrincipioAtivo>(),
+            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),
         Provider<IServiceCliente>(
           create: (ctx) => ServiceCliente(
             ctx.read<IRepositoryCliente>(),
+            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),
@@ -100,6 +103,7 @@ class ProviderServices extends StatelessWidget {
           create: (ctx) => ServiceTipoNotificacao(
             ctx.read<IRepositoryTipoNotificacao>(),
             ctx.read<IRepositoryListaControle>(),
+            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),
@@ -107,6 +111,7 @@ class ProviderServices extends StatelessWidget {
           create: (ctx) => ServiceTipoReceita(
             ctx.read<IRepositoryTipoReceita>(),
             ctx.read<IRepositoryListaControle>(),
+            ctx.read<IRepositoryReceita>(),
           ),
           lazy: true,
         ),

@@ -1,8 +1,10 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/lista_controle.dart';
+import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/dto/tipo_receita.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_lista_controle.dart';
+import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/repository/interface/i_repository_tipo_receita.dart';
 import 'package:farmasys/service/interface/i_service_tipo_receita.dart';
 import 'package:farmasys/service/service_entity_base.dart';
@@ -13,7 +15,13 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
 
   final IRepositoryListaControle _repositoryListaControle;
 
-  ServiceTipoReceita(this._repositoryTipoReceita, this._repositoryListaControle) : super(_repositoryTipoReceita);
+  final IRepositoryReceita _repositoryReceita;
+
+  ServiceTipoReceita(
+    this._repositoryTipoReceita,
+    this._repositoryListaControle,
+    this._repositoryReceita,
+  ) : super(_repositoryTipoReceita);
 
   @override
   Future<List<TipoReceita>> getAll([IEntity? relatedEntity]) async {
@@ -38,10 +46,15 @@ class ServiceTipoReceita extends ServiceEntityBase<TipoReceita> implements IServ
         message: 'O tipo de receita está em uso.',
       );
     }
-    //
-    else {
-      await super.remove(tipoReceita);
+    Receita? receita = await _repositoryReceita.getByTipoReceita(tipoReceita);
+    if (receita != null) {
+      throw ExceptionMessage(
+        code: 'em-uso',
+        message: 'O tipo de receita está em uso.',
+      );
     }
+    //
+    return await super.remove(tipoReceita);
   }
 
   @override

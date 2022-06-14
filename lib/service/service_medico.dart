@@ -1,8 +1,10 @@
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/medico.dart';
+import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_especialidade.dart';
 import 'package:farmasys/repository/interface/i_repository_medico.dart';
+import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/service/interface/i_service_medico.dart';
 import 'package:farmasys/service/service_entity_base.dart';
 
@@ -12,9 +14,12 @@ class ServiceMedico extends ServiceEntityBase<Medico> implements IServiceMedico 
 
   final IRepositoryEspecialidade _repositoryEspecialidade;
 
+  final IRepositoryReceita _repositoryReceita;
+
   ServiceMedico(
     this._repositoryMedico,
     this._repositoryEspecialidade,
+    this._repositoryReceita,
   ) : super(_repositoryMedico);
 
   Future<Medico> _getRelatedData(Medico medico) async {
@@ -71,5 +76,25 @@ class ServiceMedico extends ServiceEntityBase<Medico> implements IServiceMedico 
         }),
       );
     });
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<void> remove(Medico medico) async {
+    if (medico.id == null) {
+      throw ExceptionMessage(
+        code: 'id-nulo',
+        message: 'O id do médico não pode ser nulo.',
+      );
+    }
+    Receita? receita = await _repositoryReceita.getByMedico(medico);
+    if (receita != null) {
+      throw ExceptionMessage(
+        code: 'em-uso',
+        message: 'O médico está em uso.',
+      );
+    }
+    //
+    return await super.remove(medico);
   }
 }

@@ -75,7 +75,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
 
   late Receita _receita;
 
-  late Notificacao _notificacao = Notificacao();
+  final Notificacao _notificacao = Notificacao();
 
   List<TipoNotificacao> get _tiposNotificacao {
     return _receita.notificacao != null ? widget.tiposNotificacao : [];
@@ -89,21 +89,25 @@ class _ReceitaFormState extends State<ReceitaForm> {
     return _receita.dataEmissao != null ? _dateFormat.format(_receita.dataEmissao!) : '';
   }
 
+  String get _total {
+    return 'R\$ ${_receita.item.medicamento.preco * _receita.item.quantidade}';
+  }
+
   final _medicoController = TextEditingController();
 
   final _clienteController = TextEditingController();
 
   final _codigoController = TextEditingController();
 
+  final _totalController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _receita = widget.receita;
-    if(_receita.notificacao != null) {
-      _notificacao = _receita.notificacao!;
-    }
     _codigoController.text = _receita.notificacao?.codigo.codigo ?? '';
     _receita.farmaceuticoId = context.read<IServiceAuthenticationFarmaceutico>().currentUser?.id;
+    _totalController.text = _total;
   }
 
   @override
@@ -308,20 +312,20 @@ class _ReceitaFormState extends State<ReceitaForm> {
                     SwitchListTile(
                       title: const Text('Possui notificação de receita'),
                       value: _receita.notificacao != null,
+                      contentPadding: EdgeInsets.zero,
                       onChanged: (value) {
                         setState(() {
                           _receita.notificacao = value ? _notificacao : null;
                           _codigoController.text = value ? _notificacao.codigo.codigo : '';
                         });
                       },
-                      contentPadding: EdgeInsets.zero,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     DropdownButtonFormField<String>(
                       isExpanded: true,
-                      value: _notificacao.codigo.uf,
+                      value: _receita.notificacao?.codigo.uf,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: 'UF da notificação de receita',
@@ -335,7 +339,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
-                          _notificacao.codigo.uf = value!;
+                          _receita.notificacao?.codigo.uf = value!;
                         });
                       },
                       validator: (value) {
@@ -352,7 +356,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       controller: _codigoController,
                       onChanged: (value) {
                         setState(() {
-                          _notificacao.codigo.codigo = value;
+                          _receita.notificacao?.codigo.codigo = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -462,8 +466,11 @@ class _ReceitaFormState extends State<ReceitaForm> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              _receita.item.medicamento = widget.medicamentos.firstWhere((e) => e.id == value);
-                              _receita.item.medicamentoId = value;
+                              setState(() {
+                                _receita.item.medicamento = widget.medicamentos.firstWhere((e) => e.id == value);
+                                _receita.item.medicamentoId = value;
+                                _totalController.text = _total;
+                              });
                             },
                             validator: (value) {
                               if (value == null) {
@@ -502,6 +509,7 @@ class _ReceitaFormState extends State<ReceitaForm> {
                       onChanged: (value) {
                         setState(() {
                           _receita.item.quantidade = int.tryParse(value) ?? 0;
+                          _totalController.text = _total;
                         });
                       },
                       decoration: const InputDecoration(
@@ -547,6 +555,17 @@ class _ReceitaFormState extends State<ReceitaForm> {
                         }
                         return null;
                       },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: _totalController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Valor total',
+                      ),
+                      enabled: false,
                     ),
                     const SizedBox(
                       height: 15,

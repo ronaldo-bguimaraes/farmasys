@@ -29,12 +29,10 @@ class SnapshotBuilder<T> extends StatelessWidget {
       );
     }
     //
-    else {
-      return const Scaffold(
-        body: Center(
-          child: Text("Não há dados disponíveis"),
-        ),
-      );
-    }
+    return const Scaffold(
+      body: Center(
+        child: Text("Não há dados disponíveis"),
+      ),
+    );
   }
 }

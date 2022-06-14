@@ -109,12 +109,12 @@ class _PrincipioAtivoFormState extends State<PrincipioAtivoForm> {
                     SwitchListTile(
                       title: const Text('Possui lista de controle'),
                       value: _possuiListaControle,
+                      contentPadding: EdgeInsets.zero,
                       onChanged: (value) {
                         setState(() {
                           _possuiListaControle = value;
                         });
                       },
-                      contentPadding: EdgeInsets.zero,
                     ),
                     const SizedBox(
                       height: 15,

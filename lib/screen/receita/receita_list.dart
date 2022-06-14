@@ -1,7 +1,7 @@
 import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/screen/component/entity_listview.dart';
 import 'package:farmasys/screen/builder/stream_snapshot_builder.dart';
-import 'package:farmasys/screen/receita/receita_edit.dart';
+import 'package:farmasys/screen/receita/receita_view.dart';
 import 'package:farmasys/screen/receita/receita_form.dart';
 import 'package:farmasys/service/interface/i_service_receita.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +66,7 @@ class _ReceitaListState extends State<ReceitaList> {
               );
             },
             editShow: (ctx, receita) {
-              ReceitaEdit.show(ctx, receita);
+              ReceitaView.show(ctx, receita);
               // ScaffoldMessenger.of(ctx).showSnackBar(
               //   const SnackBar(
               //     content: Text('A edição de receita ainda não foi implementada.'),

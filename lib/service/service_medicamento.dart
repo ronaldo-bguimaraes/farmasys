@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:farmasys/dto/inteface/i_entity.dart';
 import 'package:farmasys/dto/medicamento.dart';
-import 'package:farmasys/dto/principio_ativo.dart';
+import 'package:farmasys/dto/receita.dart';
 import 'package:farmasys/exception/exception_message.dart';
 import 'package:farmasys/repository/interface/i_repository_medicamento.dart';
+import 'package:farmasys/repository/interface/i_repository_receita.dart';
 import 'package:farmasys/service/interface/i_service_medicamento.dart';
 import 'package:farmasys/service/interface/i_service_principio_ativo.dart';
 import 'package:farmasys/service/service_entity_base.dart';
@@ -14,9 +15,12 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
 
   final IServicePrincipioAtivo _repositoryPrincipioAtivo;
 
+  final IRepositoryReceita _repositoryReceita;
+
   ServiceMedicamento(
     this._repositoryMedicamento,
     this._repositoryPrincipioAtivo,
+    this._repositoryReceita,
   ) : super(_repositoryMedicamento);
 
   Future<Medicamento> _getRelatedData(Medicamento medicamento) async {
@@ -52,14 +56,23 @@ class ServiceMedicamento extends ServiceEntityBase<Medicamento> implements IServ
   }
 
   @override
-  Future<Medicamento?> getByPrincipioAtivo(PrincipioAtivo principioAtivo) async {
-    final medicamento = await _repositoryMedicamento.getByPrincipioAtivo(principioAtivo);
-    if (medicamento != null) {
-      if (medicamento.principioAtivoId != null) {
-        return await _getRelatedData(medicamento);
-      }
+  // ignore: avoid_renaming_method_parameters
+  Future<void> remove(Medicamento medicamento) async {
+    if (medicamento.id == null) {
+      throw ExceptionMessage(
+        code: 'id-nulo',
+        message: 'O id do medicamento não pode ser nulo.',
+      );
     }
-    return medicamento;
+    Receita? receita = await _repositoryReceita.getByMedicamento(medicamento);
+    if (receita != null) {
+      throw ExceptionMessage(
+        code: 'em-uso',
+        message: 'O medicamento está em uso.',
+      );
+    }
+    //
+    return await super.remove(medicamento);
   }
 
   @override

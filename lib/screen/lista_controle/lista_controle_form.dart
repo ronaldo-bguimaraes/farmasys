@@ -164,12 +164,12 @@ class _ListaControleFormState extends State<ListaControleForm> {
                     SwitchListTile(
                       title: const Text('Exige notificação de receita'),
                       value: _possuiNotificacao,
+                      contentPadding: EdgeInsets.zero,
                       onChanged: (value) {
                         setState(() {
                           _possuiNotificacao = value;
                         });
                       },
-                      contentPadding: EdgeInsets.zero,
                     ),
                     const SizedBox(
                       height: 15,

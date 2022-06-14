@@ -67,9 +67,7 @@ class ServicePrincipioAtivo extends ServiceEntityBase<PrincipioAtivo> implements
       );
     }
     //
-    else {
-      await super.remove(principioAtivo);
-    }
+    return await super.remove(principioAtivo);
   }
 
   @override
